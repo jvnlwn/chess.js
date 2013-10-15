@@ -1,0 +1,18 @@
+body {
+    background: #fafafa;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+.container {
+    width: 640px;
+    height: 640px;
+    margin: 50px auto;
+    position: relative;
+}
+
+.square {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+}
