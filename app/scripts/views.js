@@ -3,14 +3,14 @@ SquareView = Backbone.View.extend({
 	className: 'square',
 
 	events: {
-		'mouseup': 'sayPosition',
+		'mouseup': 'validateMove',
 		'mousedown': 'bringToFront'
 	},
 
 	initialize: function(options) {
 		this.options = options;
 
-		$('.container').append(this.$el);
+		$('.chess-board').append(this.$el);
 		this.render();
 	},
 
@@ -32,21 +32,22 @@ SquareView = Backbone.View.extend({
 		this.pieceType();
 	},
 
-	sayPosition: function() {
+	validateMove: function() {
 		this.$el.css('z-index', '1')
-		console.log(this.options.file,this.options.rank)
 		var that = this;
 		var id = '#' + this.$el.attr('id');
+
 		setTimeout(function(){
 			that.snapToSquare(id)
+			that.reassignId(that)
 		},100)
 	},
 
 	snapToSquare: function(id) {
 		var leftVal = parseInt(($(id).css('left')).slice(0, -2))
 		var topVal = parseInt(($(id).css('top')).slice(0, -2))
-		var closestLeftVal = parseInt($('.container').css('width').slice(0, -2))
-		var closestTopVal = parseInt($('.container').css('height').slice(0, -2));
+		var closestLeftVal = parseInt($('.chess-board').css('width').slice(0, -2))
+		var closestTopVal = parseInt($('.chess-board').css('height').slice(0, -2));
 		var destinationLeftVal = closestLeftVal
 		var destinationTopVal = closestTopVal
 
@@ -54,13 +55,16 @@ SquareView = Backbone.View.extend({
 		    var possibleLeftVal = parseInt(($(this).css('left')).slice(0, -2))
 		    var possibleTopVal = parseInt(($(this).css('top')).slice(0, -2))
 
-		    if (Math.abs(leftVal - possibleLeftVal) <= closestLeftVal) {
-		    	closestLeftVal = Math.abs(leftVal - possibleLeftVal);
+		    var diffLeft = Math.abs(leftVal - possibleLeftVal)
+		    var diffTop = Math.abs(topVal - possibleTopVal)
+
+		    if (diffLeft <= closestLeftVal) {
+		    	closestLeftVal = diffLeft;
 		        destinationLeftVal = possibleLeftVal
 		    }
 
-		    if (Math.abs(topVal - possibleTopVal) <= closestTopVal) {
-		    	closestTopVal = Math.abs(topVal - possibleTopVal);
+		    if (diffTop <= closestTopVal) {
+		    	closestTopVal = diffTop;
 		        destinationTopVal = possibleTopVal
 		    }
 		})
@@ -74,16 +78,40 @@ SquareView = Backbone.View.extend({
 		})
 	},
 
+	reassignId: function(that) {
+		var id = '#' + that.$el.attr('id');
+		var newId = '';
+
+		var leftPercentage = parseInt($(id).css('left').slice(0, -1))
+		var topPercentage = parseInt($(id).css('top').slice(0, -1))
+
+		var newLeftPercentage = ((leftPercentage / $('.chess-board').width()) * 100).toString() + '%';
+		var newTopPercentage = ((topPercentage / $('.chess-board').width()) * 100).toString() + '%';
+
+		that.options.fileArray.forEach(function(file) {
+			if (that.options.left[file] === newLeftPercentage) {
+				newId += file;
+			}
+		}) 
+
+		that.options.rankArray.forEach(function(rank) {
+			if (that.options.top[rank] === newTopPercentage) {
+				newId += rank;
+			}
+		}) 
+
+		that.$el.attr('id', newId)
+	},
+
 	bringToFront: function() {
 		this.$el.css('z-index', '100')
 	},
 
 	pieceType: function() {
-		console.log(this.model.piece)
 		if (this.model !== undefined) {
 			if (this.model.piece) {
 				this.$el.css({
-					background: 'url("http://clipartist.info/openclipart.org/SVG/portablejim/chess_tile_pawn_3-800px.png") no-repeat center center',
+					background: 'url("../images/wp.png") no-repeat center center',
     				'background-size': 'cover',
 					width: '8%',
 					height: '8%',

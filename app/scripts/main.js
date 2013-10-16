@@ -49,7 +49,7 @@
 		}, cssPosition) 
 
 		var square = '<div class="board-square"></div>';
-		$('.container').prepend($(square).css(cssSquare))
+		$('.chess-board').prepend($(square).css(cssSquare))
 
 		if (rankValue === '2') {
 
@@ -58,7 +58,11 @@
 				rank: rankValue,
 				file: fileValue,
 				cssPosition: cssPosition,
-				id: fileValue + rankValue
+				id: fileValue + rankValue,
+				left: left,
+				top: top,
+				rankArray: rank,
+				fileArray: file
 			})
 		} 
 	}
