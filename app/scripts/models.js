@@ -1,7 +1,9 @@
 Square = Backbone.Model.extend({
-	initialize: function() {
-		console.log('yo i\'m a square')
-	}
+	initialize: function(options) {
+		this.options = options
+		this.piece = options.piece
+	},
+
 })
 
 Squares = Backbone.Collection.extend({
@@ -11,7 +13,6 @@ Squares = Backbone.Collection.extend({
 		console.log('yo i got some squres')
 	}
 })
-
 
 
 

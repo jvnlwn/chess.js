@@ -13,7 +13,12 @@
 		var rankValue = rank[Math.floor(i / 8)];
 		var fileValue = file[i % 8];
 
+		if (rankValue === '2') {
+			var piece = 'pawn'
+		} else {var piece = undefined}
+
 		new SquareView({
+			model: new Square({piece: piece}),
 			rank: rankValue,
 			file: fileValue,
 			color: colorCycles[rankValue % 2 + 1][i % 2]
