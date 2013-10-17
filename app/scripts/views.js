@@ -121,7 +121,8 @@ SquareView = Backbone.View.extend({
 		if (this.model !== undefined) {
 			if (this.model.options.piece) {
 				this.$el.css({
-					background: 'url("../images/' + this.model.options.image + '.png") no-repeat center center',
+					// background: 'url("../images/' + this.model.options.image + '.png") no-repeat center center',
+					background: 'url("../app/images/' + this.model.options.image + '.png") no-repeat center center',
     				'background-size': 'cover',
 					width: '8%',
 					height: '8%',
