@@ -1,7 +1,6 @@
 Square = Backbone.Model.extend({
 	initialize: function(options) {
 		this.options = options
-		this.piece = options.piece
 	},
 
 })

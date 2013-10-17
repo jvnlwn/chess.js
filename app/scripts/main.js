@@ -31,10 +31,40 @@
 		'h': '87.5%'
 	}
 
+	var pieces = {
+		'p': 'pawn',
+		'r': 'rook',
+		'n': 'knight',
+		'b': 'bishop',
+		'q': 'queen',
+		'k': 'king'
+	}	
+
+	var pieceImage = {
+		'2': 'wp',
+		'a1': 'wr',
+		'b1': 'wn',
+		'c1': 'wb',
+		'd1': 'wq',
+		'e1': 'wk',
+		'f1': 'wb',
+		'g1': 'wn',
+		'h1': 'wr',
+		'7': 'bp',
+		'a8': 'br',
+		'b8': 'bn',
+		'c8': 'bb',
+		'd8': 'bq',
+		'e8': 'bk',
+		'f8': 'bb',
+		'g8': 'bn',
+		'h8': 'br'
+	}
 
 	for (i = 0; i < 64; i++) {
 		var rankValue = rank[Math.floor(i / 8)];
 		var fileValue = file[i % 8];
+		var id = fileValue + rankValue;
 
 		var cssPosition = {
 			top: top[rankValue],
@@ -51,19 +81,47 @@
 		var square = '<div class="board-square"></div>';
 		$('.chess-board').prepend($(square).css(cssSquare))
 
-		if (rankValue === '2') {
+		var modelData = {
+
+		}
+
+		if (pieceImage[id] || pieceImage[rankValue]) {
+			var getPiece = pieceImage[id] || pieceImage[rankValue];
+			console.log(pieceImage[id] || pieceImage[rankValue])
+			console.log(getPiece)
+			var pieceToken = getPiece.slice(1)
 
 			new SquareView({
-				model: new Square({piece: 'pawn'}),
+				model: new Square(
+					{
+						piece: pieces[pieceToken],
+						image: getPiece,
+						token: pieceToken.toUpperCase()
+					}),
 				rank: rankValue,
 				file: fileValue,
 				cssPosition: cssPosition,
-				id: fileValue + rankValue,
+				id: id,
 				left: left,
 				top: top,
 				rankArray: rank,
 				fileArray: file
 			})
-		} 
+		}
+
+		// if (rankValue === '2') {
+
+		// 	new SquareView({
+		// 		model: new Square({piece: 'pawn'}),
+		// 		rank: rankValue,
+		// 		file: fileValue,
+		// 		cssPosition: cssPosition,
+		// 		id: fileValue + rankValue,
+		// 		left: left,
+		// 		top: top,
+		// 		rankArray: rank,
+		// 		fileArray: file
+		// 	})
+		// }
 	}
 })();

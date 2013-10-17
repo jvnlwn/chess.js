@@ -44,38 +44,48 @@ SquareView = Backbone.View.extend({
 	},
 
 	snapToSquare: function(id) {
-		var leftVal = parseInt(($(id).css('left')).slice(0, -2))
-		var topVal = parseInt(($(id).css('top')).slice(0, -2))
-		var closestLeftVal = parseInt($('.chess-board').css('width').slice(0, -2))
-		var closestTopVal = parseInt($('.chess-board').css('height').slice(0, -2));
-		var destinationLeftVal = closestLeftVal
-		var destinationTopVal = closestTopVal
+		var actual = {
+			left: parseInt(($(id).css('left')).slice(0, -2)),
+			top: parseInt(($(id).css('top')).slice(0, -2))
+		}
+
+		var closest = {
+			left: parseInt($('.chess-board').css('width').slice(0, -2)),
+			top: parseInt($('.chess-board').css('height').slice(0, -2))
+		}
+
+		var newCSSPosition = {};
 
 		$('.board-square').each(function(){
-		    var possibleLeftVal = parseInt(($(this).css('left')).slice(0, -2))
-		    var possibleTopVal = parseInt(($(this).css('top')).slice(0, -2))
-
-		    var diffLeft = Math.abs(leftVal - possibleLeftVal)
-		    var diffTop = Math.abs(topVal - possibleTopVal)
-
-		    if (diffLeft <= closestLeftVal) {
-		    	closestLeftVal = diffLeft;
-		        destinationLeftVal = possibleLeftVal
+		    var possible = {
+		    	left: parseInt(($(this).css('left')).slice(0, -2)),
+		    	top: parseInt(($(this).css('top')).slice(0, -2))
 		    }
 
-		    if (diffTop <= closestTopVal) {
-		    	closestTopVal = diffTop;
-		        destinationTopVal = possibleTopVal
+		    var diff = {
+		    	left: Math.abs(actual.left - possible.left),
+		    	top: Math.abs(actual.top - possible.top)
+		    }
+
+		    if (diff.left <= closest.left && diff.top <= closest.top) {
+		    	closest = {
+		    		left: diff.left,
+		    		top: diff.top
+		    	}
+
+		    	newCSSPosition = {
+		    		left: possible.left,
+		    		top: possible.top
+		    	}
 		    }
 		})
 
-		destinationLeftVal = destinationLeftVal.toString() + 'px';
-		destinationTopVal  = destinationTopVal.toString() + 'px';
+		newCSSPosition = {
+			left: newCSSPosition.left.toString() + 'px',
+			top: newCSSPosition.top.toString() + 'px'
+		}
 
-		$(id).css({
-			left: destinationLeftVal,
-			top: destinationTopVal
-		})
+		$(id).css(newCSSPosition);
 	},
 
 	reassignId: function(that) {
@@ -109,9 +119,9 @@ SquareView = Backbone.View.extend({
 
 	pieceType: function() {
 		if (this.model !== undefined) {
-			if (this.model.piece) {
+			if (this.model.options.piece) {
 				this.$el.css({
-					background: 'url("../images/wp.png") no-repeat center center',
+					background: 'url("../images/' + this.model.options.image + '.png") no-repeat center center',
     				'background-size': 'cover',
 					width: '8%',
 					height: '8%',
