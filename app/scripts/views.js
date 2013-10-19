@@ -1,4 +1,4 @@
-SquareView = Backbone.View.extend({
+PieceView = Backbone.View.extend({
 
 	className: 'square',
 
@@ -33,6 +33,7 @@ SquareView = Backbone.View.extend({
 	},
 
 	validateMove: function() {
+		console.log(this.model.options.player	)
 		this.$el.css('z-index', '1')
 		var that = this;
 		var id = '#' + this.$el.attr('id');

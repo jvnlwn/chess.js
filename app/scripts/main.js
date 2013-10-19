@@ -1,4 +1,8 @@
 ;(function(){
+	// these will probably move to a router . . . when I make one
+	var whitePieces = new WhitePieces();
+	var blackPieces = new BlackPieces();
+
 	var rank = ['1', '2', '3', '4', '5', '6', '7', '8'];
 	var file = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -83,16 +87,25 @@
 
 		if (piecePosition[id] || piecePosition[rankValue]) {
 			var pieceTypeAndColor = piecePosition[id] || piecePosition[rankValue];
-			var pieceToken = pieceTypeAndColor.slice(1)
+			var pieceToken = pieceTypeAndColor.slice(1);
+			var player = pieceTypeAndColor.slice(0,1);
 
-			new SquareView({
-				model: new Square(
-					{
-						piece: pieceType[pieceToken],
-						image: pieceTypeAndColor,
-						token: pieceToken.toUpperCase(),
-						player: pieceTypeAndColor.slice(0,1)
-					}),
+			// setting pawn notation to '' for notation purposes
+			if(pieceToken === 'p') {
+				var notation = '';
+			} else {
+				var notation = pieceToken.toUpperCase();
+			}
+
+			var piece = {
+				piece: pieceType[pieceToken],
+				image: pieceTypeAndColor,
+				token: pieceToken.toUpperCase(),
+				notation: notation,
+				player: player
+			}
+
+			var pieceView = {
 				rank: rankValue,
 				file: fileValue,
 				cssPosition: cssPosition,
@@ -101,7 +114,17 @@
 				top: top,
 				rankArray: rank,
 				fileArray: file
-			})
+			}
+
+			if (player === 'W') {
+				whitePieces.add(piece)
+				pieceView.model = whitePieces.last();
+			} else {
+				blackPieces.add(piece)
+				pieceView.model = blackPieces.last();
+			}
+
+			new PieceView(pieceView)
 		}
 	}
 })();
