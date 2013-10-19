@@ -39,7 +39,9 @@ SquareView = Backbone.View.extend({
 
 		setTimeout(function(){
 			that.snapToSquare(id)
-			that.reassignId(that)
+			setTimeout(function(){
+				that.reassignId(that)
+			},200)
 		},100)
 	},
 
@@ -119,16 +121,14 @@ SquareView = Backbone.View.extend({
 
 	pieceType: function() {
 		if (this.model !== undefined) {
-			if (this.model.options.piece) {
-				this.$el.css({
-					// background: 'url("../images/' + this.model.options.image + '.png") no-repeat center center',
-					background: 'url("../app/images/' + this.model.options.image + '.png") no-repeat center center',
-    				'background-size': 'cover',
-					width: '8%',
-					height: '8%',
-					margin: '2.2%'
-				})
-			}
+			this.$el.css({
+				background: 'url("../images/' + this.model.options.image + '.png") no-repeat center center',
+				// background: 'url("../app/images/' + this.model.options.image + '.png") no-repeat center center',
+				'background-size': 'cover',
+				width: '8%',
+				height: '8%',
+				margin: '2.2%'
+			})
 		}
 	}
 })
