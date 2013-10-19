@@ -205,26 +205,26 @@
 			})
         });
 
-		// describe('pawn at e4', function() {
+		describe('pawn at e4', function() {
 
-		// 	it('forward capture 2. e5 ... should be unsuccessful', function (done) {
-		// 		moveTest('e4', 'e5', false, done)
-		// 	})
+			it('forward capture 2. e5 ... should be unsuccessful', function (done) {
+				moveTest('e4', 'e5', false, done)
+			})
 
-		// 	it('diagonal pass 2. d5 ... should be unsuccessful', function (done) {
-		// 		moveTest('e4', 'd5', false, done)
-		// 	})
+			it('diagonal pass 2. d5 ... should be unsuccessful', function (done) {
+				moveTest('e4', 'd5', false, done)
+			})
 
-		// 	it('arbitrary move 2. h5 ... should be unsuccessful', function (done) {
-		// 		moveTest('e4', 'h5', false, done)
-		// 	})
-		// })
+			it('arbitrary move 2. h5 ... should be unsuccessful', function (done) {
+				moveTest('e4', 'h5', false, done)
+			})
+		})
 
 		describe('knight at b1', function() {
 
-			// it('taking already possessed square 2. Nd2 ... should be unsuccessful', function(done) {
-			// 	moveTest('b1', 'd2', false, done)
-			// })
+			it('taking already possessed square 2. Nd2 ... should be unsuccessful', function(done) {
+				moveTest('b1', 'd2', false, done)
+			})
 
 			it('moving a file "L" 2. Nc3 ... should be successful', function(done) {
 				moveTest('b1', 'c3', true, done)
@@ -233,9 +233,9 @@
 
 		describe('knight at g8', function() {
 
-			// it('moving arbitrary 2. ... Na4 should be unsuccessful', function(done) {
-			// 	moveTest('g8', 'a4', false, done)
-			// })
+			it('moving arbitrary 2. ... Na4 should be unsuccessful', function(done) {
+				moveTest('g8', 'a4', false, done)
+			})
 
 			it('moving a rank "L" 2. ... Ne7 should be successful', function(done) {
 				moveTest('g8', 'e7', true, done)
@@ -244,9 +244,9 @@
 
 		describe('bishop at f1', function() {
 
-			// it('diagonal jump 3. Bh3 ... should be unsuccessful', function(done) {
-			// 	moveTest('f1', 'h3', false, done)
-			// })
+			it('diagonal jump 3. Bh3 ... should be unsuccessful', function(done) {
+				moveTest('f1', 'h3', false, done)
+			})
 
 			it('diagonal move 3. Bc4 ... should be successful', function(done) {
 					moveTest('f1', 'c4', true, done)
@@ -262,9 +262,9 @@
 
 		describe('pawn at e4', function() {
 
-			// it('backward one space 4. e3 ... should be unsuccessful', function(done) {
-			// 	moveTest('e4', 'e3', false, done)
-			// })
+			it('backward one space 4. e3 ... should be unsuccessful', function(done) {
+				moveTest('e4', 'e3', false, done)
+			})
 
 			it('diagonal capture 4. exd5 ... should be successful', function(done) {
 				moveTest('e4', 'd5', true, done)
@@ -276,13 +276,13 @@
 
 		describe('pawn at e5', function() {
 
-			// it('wierd en passant 4. ... d4 should be unsuccessful', function(done) {
-			// 	moveTest('e5', 'd4', false, done)
-			// })
+			it('wierd en passant 4. ... d4 should be unsuccessful', function(done) {
+				moveTest('e5', 'd4', false, done)
+			})
 
-			// it('forward two spaces after been moved 4. ... e3 should be successful', function(done) {
-			// 	moveTest('e5', 'e3', false, done)
-			// })
+			it('forward two spaces after been moved 4. ... e3 should be successful', function(done) {
+				moveTest('e5', 'e3', false, done)
+			})
 
 			it('forward move 4. ... e4 should be successful', function(done) {
 				moveTest('e5', 'e4', true, done)
@@ -302,64 +302,64 @@
 			// check for wp on f4 to be captured
 		})
 
-		// describe('move king into check', function() {
+		describe('move king into check', function() {
 
-		// 	it('6. Ke2 ... should be unsuccessful', function(done) {
-		// 		moveTest('e1', 'e2', false, done)
-		// 	})
-		// }) 
+			it('6. Ke2 ... should be unsuccessful', function(done) {
+				moveTest('e1', 'e2', false, done)
+			})
+		}) 
 
 		describe('queen at d1 invalid moves and one good', function() {
 
-			// it('jump over piece on rank 6. Qf1 ... should be unsuccessful', function(done) {
-			// 	moveTest('d1', 'f1', false, done)
-			// })
+			it('jump over piece on rank 6. Qf1 ... should be unsuccessful', function(done) {
+				moveTest('d1', 'f1', false, done)
+			})
 
-			// it('jump over piece on file 6. Qd3 ... should be unsuccessful', function(done) {
-			// 	moveTest('d1', 'd3', false, done)
-			// })
+			it('jump over piece on file 6. Qd3 ... should be unsuccessful', function(done) {
+				moveTest('d1', 'd3', false, done)
+			})
 
-			// it('jump over piece on diagonal 6. Qg4 ... should be unsuccessful', function(done) {
-			// 	moveTest('d1', 'g4', false, done)
-			// })
+			it('jump over piece on diagonal 6. Qg4 ... should be unsuccessful', function(done) {
+				moveTest('d1', 'g4', false, done)
+			})
 
-			// it('move to own occupied square 6. Qe1 ... should be unsuccessful', function(done) {
-			// 	moveTest('d1', 'e1', false, done)
-			// })
+			it('move to own occupied square 6. Qe1 ... should be unsuccessful', function(done) {
+				moveTest('d1', 'e1', false, done)
+			})
 
 			it('move diagonal one square 6. Qe2 ... should be successful', function(done) {
 				moveTest('d1', 'e2', true, done)
 			})
 		})
 
-		// describe('piece pinned to king', function() {
+		describe('piece pinned to king', function() {
 
-		// 	it('move pinned N 6. ... Nc6 should be unsuccessful', function(done) {
-		// 		moveTest('e7', 'c6', false, done)
-		// 	})
+			it('move pinned N 6. ... Nc6 should be unsuccessful', function(done) {
+				moveTest('e7', 'c6', false, done)
+			})
 
-		// 	it('move pinned N 6. ... Nxd5 should be unsuccessful', function(done) {
-		// 		moveTest('e7', 'd5', false, done)
-		// 	})
-		// })
+			it('move pinned N 6. ... Nxd5 should be unsuccessful', function(done) {
+				moveTest('e7', 'd5', false, done)
+			})
+		})
 
 		describe('6. ... Bh3, 7. Nxh3 ... AND pawn inhibited test', function() {
 
-			// it('B at c8 arbitrary move 6. ... Bd8 should be unsuccessful', function(done) {
-			// 	moveTest('c8', 'f6', false, done)
-			// })
+			it('B at c8 arbitrary move 6. ... Bd8 should be unsuccessful', function(done) {
+				moveTest('c8', 'f6', false, done)
+			})
 
 			it('B at c8 move diagonal 6. ... Bh3 should be successful', function(done) {
 				moveTest('c8', 'h3', true, done)
 			})
 
-			// it('pawn at h2 move one forward 7. h3 ... should be successful', function(done) {
-			// 	moveTest('h2', 'h3', false, done)
-			// })
+			it('pawn at h2 move one forward 7. h3 ... should be successful', function(done) {
+				moveTest('h2', 'h3', false, done)
+			})
 
-			// it('pawn at h2 move two forward 7. h4 ... should be successful', function(done) {
-			// 	moveTest('h2', 'h4', false, done)
-			// })
+			it('pawn at h2 move two forward 7. h4 ... should be successful', function(done) {
+				moveTest('h2', 'h4', false, done)
+			})
 
 			it('N at g1 move diagonal 7. Nxh3 ... should be successful', function(done) {
 				moveTest('g1', 'h3', true, done)
@@ -382,9 +382,9 @@
 				moveTest('g7', 'g6', true, done)
 			})
 
-			// it('p at d5 move forward one square 10. dxc6 ... should be unsuccessful', function(done) {
-			// 	moveTest('d5', 'c6', false, done)
-			// })
+			it('p at d5 move forward one square 10. dxc6 ... should be unsuccessful', function(done) {
+				moveTest('d5', 'c6', false, done)
+			})
 		})
 
 		describe('bishop takes piece', function() {
@@ -393,9 +393,9 @@
 				moveTest('c1', 'h6', true, done)
 			})
 
-			// it('B at f8 rank move 10. ... Bh8 should be unsuccessful', function(done) {
-			// 	moveTest('f8', 'h6', false, done)
-			// })
+			it('B at f8 rank move 10. ... Bh8 should be unsuccessful', function(done) {
+				moveTest('f8', 'h6', false, done)
+			})
 
 			it('B at f8 diagaonal 10. ... Bxh6 should be successful', function(done) {
 				moveTest('f8', 'h6', true, done)
@@ -417,13 +417,13 @@
 				moveTest('f3', 'f2', true, done)
 			})
 
-			// it('king\'s side castle at g1, 12. O-O ... should be unsuccessful', function(done) {
-			// 	moveTest('e1', 'g1', false, done)
-			// })
+			it('king\'s side castle at g1, 12. O-O ... should be unsuccessful', function(done) {
+				moveTest('e1', 'g1', false, done)
+			})
 
-			// it('queen\'s sied castle at c1, 12. O-O-O ... should be unsuccessful', function(done) {
-			// 	moveTest('e1', 'c1', false, done)
-			// })
+			it('queen\'s sied castle at c1, 12. O-O-O ... should be unsuccessful', function(done) {
+				moveTest('e1', 'c1', false, done)
+			})
 
 			it('queen takes pawn, 12. Qxf2 ... should be successful', function(done) {
 				moveTest('e2', 'f2', true, done)
@@ -439,9 +439,9 @@
 
 		describe('move queens', function() {
 
-			// it('Q at f2 arbitrary move, 13. Qg4 ... should be unsuccessful', function(done) {
-			// 	moveTest('f2', 'g4', false, done)
-			// })
+			it('Q at f2 arbitrary move, 13. Qg4 ... should be unsuccessful', function(done) {
+				moveTest('f2', 'g4', false, done)
+			})
 
 			it('Q at f2, 13. Qd2 ... should be successful', function(done) {
 				moveTest('f2', 'd2', true, done)
