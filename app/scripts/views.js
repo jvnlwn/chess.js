@@ -33,31 +33,44 @@ PieceView = Backbone.View.extend({
 	},
 
 	validateMove: function() {
-		console.log(this.model.options.player	)
 		this.$el.css('z-index', '1')
 		var that = this;
-		var id = '#' + this.$el.attr('id');
+		var id = this.$el.attr('id');
 
 		setTimeout(function(){
-			that.snapToSquare(id)
-			setTimeout(function(){
-				that.reassignId(that)
-			},200)
+			// that.reassignId(that, that.findClosest(id))
+			var newPercentages = that.findClosest(id)
+			var newId = that.reassignId(that, newPercentages)
 		},100)
+
+		// if (this.model.options.token === 'K' ) {
+		// 	console.log(this.model.castle('g8'))
+		// }
 	},
 
-	snapToSquare: function(id) {
+	isAPath: function(id, newId) {
+		// if ()
+	},
+
+	findClosest: function(id) {
+		var id = '#' + id;	
+
 		var actual = {
 			left: parseInt(($(id).css('left')).slice(0, -2)),
 			top: parseInt(($(id).css('top')).slice(0, -2))
 		}
 
-		var closest = {
-			left: parseInt($('.chess-board').css('width').slice(0, -2)),
-			top: parseInt($('.chess-board').css('height').slice(0, -2))
+		var boardDimensions = {
+			width:  parseInt($('.chess-board').css('width').slice(0, -2)),
+			height: parseInt($('.chess-board').css('height').slice(0, -2))
 		}
 
-		var newCSSPosition = {};
+		var closest = {
+			left: boardDimensions.width,
+			top: boardDimensions.height
+		}
+
+		var newPercentages = {};
 
 		$('.board-square').each(function(){
 		    var possible = {
@@ -76,44 +89,39 @@ PieceView = Backbone.View.extend({
 		    		top: diff.top
 		    	}
 
-		    	newCSSPosition = {
+		    	newPercentages = {
 		    		left: possible.left,
 		    		top: possible.top
 		    	}
 		    }
 		})
 
-		newCSSPosition = {
-			left: newCSSPosition.left.toString() + 'px',
-			top: newCSSPosition.top.toString() + 'px'
+		newPercentages = {
+			left: ((newPercentages.left / boardDimensions.width) * 100).toString() + '%',
+			top: ((newPercentages.top / boardDimensions.height) * 100).toString() + '%'
 		}
 
-		$(id).css(newCSSPosition);
+		return newPercentages;
 	},
 
-	reassignId: function(that) {
+	reassignId: function(that, newPercentages) {
 		var id = '#' + that.$el.attr('id');
 		var newId = '';
 
-		var leftPercentage = parseInt($(id).css('left').slice(0, -1))
-		var topPercentage = parseInt($(id).css('top').slice(0, -1))
-
-		var newLeftPercentage = ((leftPercentage / $('.chess-board').width()) * 100).toString() + '%';
-		var newTopPercentage = ((topPercentage / $('.chess-board').width()) * 100).toString() + '%';
-
 		that.options.fileArray.forEach(function(file) {
-			if (that.options.left[file] === newLeftPercentage) {
+			if (that.options.left[file] === newPercentages.left) {
 				newId += file;
 			}
 		}) 
 
 		that.options.rankArray.forEach(function(rank) {
-			if (that.options.top[rank] === newTopPercentage) {
+			if (that.options.top[rank] === newPercentages.top) {
 				newId += rank;
 			}
-		}) 
+		})
 
-		that.$el.attr('id', newId)
+		// return [newId, newPercentages]
+		return newId;
 	},
 
 	bringToFront: function() {

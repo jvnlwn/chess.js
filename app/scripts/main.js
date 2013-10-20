@@ -1,7 +1,8 @@
+// these will probably move to a router . . . when I make one
+var whitePieces = new WhitePieces();
+var blackPieces = new BlackPieces();
+
 ;(function(){
-	// these will probably move to a router . . . when I make one
-	var whitePieces = new WhitePieces();
-	var blackPieces = new BlackPieces();
 
 	var rank = ['1', '2', '3', '4', '5', '6', '7', '8'];
 	var file = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -101,6 +102,7 @@
 				piece: pieceType[pieceToken],
 				image: pieceTypeAndColor,
 				token: pieceToken.toUpperCase(),
+				position: id,
 				notation: notation,
 				player: player
 			}
@@ -116,7 +118,7 @@
 				fileArray: file
 			}
 
-			if (player === 'W') {
+			if (player === 'w') {
 				whitePieces.add(piece)
 				pieceView.model = whitePieces.last();
 			} else {
