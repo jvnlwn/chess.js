@@ -41,6 +41,7 @@ PieceView = Backbone.View.extend({
 			// that.reassignId(that, that.findClosest(id))
 			var newPercentages = that.findClosest(id)
 			var newId = that.reassignId(that, newPercentages)
+			that.isAPath(that, id, newId)
 		},100)
 
 		// if (this.model.options.token === 'K' ) {
@@ -48,8 +49,74 @@ PieceView = Backbone.View.extend({
 		// }
 	},
 
-	isAPath: function(id, newId) {
-		// if ()
+	isAPath: function(that, id, newId) {
+		var pathDetails = {
+			path:     false,
+			distance: 0
+		}
+
+		var files = {
+			original: id.slice(0, 1),
+			target:   newId.slice(0, 1)
+		}
+
+		var ranks = {
+			original: id.slice(1),
+			target:   newId.slice(1)
+		}
+
+		var fileDiff = {}
+		var rankDiff = {}
+
+		that.options.fileArray.forEach(function(file, index){
+			if (files.original === file) {
+				fileDiff.original = index;
+			}
+			if (files.target === file) {
+				fileDiff.target = index;
+			}
+
+		})
+
+		that.options.rankArray.forEach(function(rank, index){
+			if (ranks.original === rank) {
+				rankDiff.original = index;
+			}
+			if (ranks.target === rank) {
+				rankDiff.target = index;
+			}
+		})
+
+		fileDiff.diff = Math.abs(fileDiff.original - fileDiff.target)
+		rankDiff.diff = Math.abs(rankDiff.original - rankDiff.target)
+
+		// cascades: a file or rank path with distance of 3 will overide this
+		if ((fileDiff.diff + rankDiff.diff) === 3) {
+			pathDetails.path = 'l-shape';
+			pathDetails.distance = 3;
+		}
+
+		if (fileDiff.diff === 0) {
+			pathDetails.path = 'file';
+			pathDetails.distance = rankDiff.diff;
+		}
+
+		if (rankDiff.diff === 0) {
+			pathDetails.path = 'rank';
+			pathDetails.distance = fileDiff.diff;
+		}
+
+		if (Math.abs(fileDiff.diff - rankDiff.diff) === 0) {
+			pathDetails.path = 'diagonal';
+			pathDetails.distance = fileDiff.diff;
+		}
+
+		// piece wasn't moved from square
+		if (pathDetails.distance === 0) {
+			pathDetails.path = false;
+		}
+
+		return pathDetails;
 	},
 
 	findClosest: function(id) {
