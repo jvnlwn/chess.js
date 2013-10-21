@@ -11,6 +11,11 @@ PieceView = Backbone.View.extend({
 		this.options = options;
 
 		$('.chess-board').append(this.$el);
+		var that = this;
+		this.model.on('remove', function() {
+			that.remove()
+		})
+
 		this.render();
 	},
 
@@ -44,7 +49,24 @@ PieceView = Backbone.View.extend({
 			var pathDetails = that.isAPath(that, id, newId)
 			that.isPathKnown(pathDetails)
 			var dependenciesPass = that.extraDependencies(pathDetails, newId)
-			that.generalDependencies(pathDetails, dependenciesPass, newId)
+			dependenciesPass = that.generalDependencies(pathDetails, dependenciesPass, newId)
+
+			if (dependenciesPass) {
+
+				var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
+				if (pieceIsThere) {
+					pieceIsThere.collection.remove(pieceIsThere)
+				}
+
+				that.$el.attr('id', newId)
+				that.options.cssPosition = newPercentages
+				that.$el.css(that.options.cssPosition)
+				that.model.instruct({moved: true})
+				that.model.set('position', newId)
+
+			} else {
+				that.$el.css(that.options.cssPosition)
+			}
 		},100)
 
 		// if (this.model.options.token === 'K' ) {
@@ -193,7 +215,13 @@ PieceView = Backbone.View.extend({
 	},
 
 	extraDependencies: function(pathDetails, newId) {
-		var dependenciesPass = true;
+		var dependenciesPass;
+
+		if (pathDetails.path) {
+			dependenciesPass = true;	
+		} else {
+			dependenciesPass = false;
+		}
 		if (pathDetails.path && this.model.dependencies) {
 			// path is good but check these dependencies
 			var dependencies = this.model.dependencies[pathDetails.path]
@@ -215,6 +243,7 @@ PieceView = Backbone.View.extend({
 					var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
 
 					if (pieceIsThere) {
+						console.log('piece present')
 						dependenciesPass = false;
 					}
 				}
@@ -222,14 +251,15 @@ PieceView = Backbone.View.extend({
 				if (dependencies.occupied === this.model.options.opponent) {
 					var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
 
-					// console.log('huh' + pieceIsThere.options.player)
 					if ((!pieceIsThere) || (pieceIsThere.options.player !== this.model.options.opponent)) {
+						console.log('no opponent present')
 						dependenciesPass = false;
 					}
 				}
 			}
 
 		}
+
 		return dependenciesPass;
 	},
 
@@ -238,16 +268,22 @@ PieceView = Backbone.View.extend({
 			var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
 
 			if ((pieceIsThere) && (pieceIsThere.options.player !== this.model.options.opponent)) {
+				// player already occupies target square
 				dependenciesPass = false;
 				console.log('you already here dude')
 			} else if (pathDetails.path !== 'l-shape') {
-				if (pathDetails.distance > 1) {
-					if (pathDetails.path === 'file') {
+				pathDetails.innerSquares.forEach(function(square) {
+					var pieceIsThere = blackPieces.findWhere({position: square}) || whitePieces.findWhere({position: square}) || false;
 
+					if (pieceIsThere) {
+						// path is blocked
+						dependenciesPass = false;
+						console.log('dude a piece is in your way')
 					}
-				}
+				})
 			}
 		}
+		return dependenciesPass;
 	},
 
 	findClosest: function(id) {
