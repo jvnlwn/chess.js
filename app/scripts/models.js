@@ -21,17 +21,14 @@ Piece = Backbone.Model.extend({
 				this.paths = ['file', 'diagonal']
 				this.dependencies = {
 					'file': { 
-						targetSquare: {
-							occupation: 'not occupied', 
-							range:      this.range, 
-							direction:  'forward'
-						}
+						occupied: false, 
+						range:      this.range, 
+						direction:  'forward'
 					},
 					'diagonal': { 
-						targetSquare: {
-							occupation: 'opponent present',
-							range: 1
-						}
+						occupied: this.options.opponent,
+						range: 1,
+						direction: 'forward'
 					}
 				}			
 			}
@@ -90,19 +87,13 @@ Piece = Backbone.Model.extend({
 				this.paths = ['file', 'rank', 'diagonal']
 				this.dependencies = {
 					'file': {
-						targetSquare: {
-							range: 1, 
-						}
+						range: 1 
 					},
 					'rank': {
-						targetSquare: {
-							range: this.range, 
-						}
+						range: this.range,
 					},
 					'diagonal': {
-						targetSquare: {
-							range: 1, 
-						}
+						range: 1
 					}
 				}
 			}
@@ -110,6 +101,10 @@ Piece = Backbone.Model.extend({
 
 		return this.instruct({});
 	}
+})
+
+AllPieces = Backbone.Collection.extend({
+	model: Piece
 })
 
 WhitePieces = Backbone.Collection.extend({

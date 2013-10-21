@@ -66,6 +66,16 @@ var blackPieces = new BlackPieces();
 		'h8': 'br'
 	}
 
+	var color = {
+		'w': 'white',
+		'b': 'black'
+	}
+
+	var opponentColor = {
+		'b': 'white',
+		'w': 'black'
+	}
+
 	for (i = 0; i < 64; i++) {
 		var rankValue = rank[Math.floor(i / 8)];
 		var fileValue = file[i % 8];
@@ -89,7 +99,8 @@ var blackPieces = new BlackPieces();
 		if (piecePosition[id] || piecePosition[rankValue]) {
 			var pieceTypeAndColor = piecePosition[id] || piecePosition[rankValue];
 			var pieceToken = pieceTypeAndColor.slice(1);
-			var player = pieceTypeAndColor.slice(0,1);
+			var player = color[pieceTypeAndColor.slice(0,1)];
+			var opponent = opponentColor[pieceTypeAndColor.slice(0,1)];
 
 			// setting pawn notation to '' for notation purposes
 			if(pieceToken === 'p') {
@@ -104,7 +115,8 @@ var blackPieces = new BlackPieces();
 				token: pieceToken.toUpperCase(),
 				position: id,
 				notation: notation,
-				player: player
+				player: player,
+				opponent: opponent
 			}
 
 			var pieceView = {
@@ -118,7 +130,7 @@ var blackPieces = new BlackPieces();
 				fileArray: file
 			}
 
-			if (player === 'w') {
+			if (player === 'white') {
 				whitePieces.add(piece)
 				pieceView.model = whitePieces.last();
 			} else {

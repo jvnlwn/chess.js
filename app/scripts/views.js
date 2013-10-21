@@ -29,7 +29,7 @@ PieceView = Backbone.View.extend({
 		var elem = document.querySelector(id);
 		new Draggabilly(elem);
 
-		this.pieceType();
+		this.displayPiece();
 	},
 
 	validateMove: function() {
@@ -41,7 +41,9 @@ PieceView = Backbone.View.extend({
 			// that.reassignId(that, that.findClosest(id))
 			var newPercentages = that.findClosest(id)
 			var newId = that.reassignId(that, newPercentages)
-			that.isAPath(that, id, newId)
+			var pathDetails = that.isAPath(that, id, newId)
+			that.isPathKnown(pathDetails)
+			that.extraDependencies(pathDetails, newId)
 		},100)
 
 		// if (this.model.options.token === 'K' ) {
@@ -53,6 +55,7 @@ PieceView = Backbone.View.extend({
 		var pathDetails = {
 			path:     false,
 			distance: 0
+			// direction
 		}
 
 		var files = {
@@ -90,6 +93,7 @@ PieceView = Backbone.View.extend({
 		fileDiff.diff = Math.abs(fileDiff.original - fileDiff.target)
 		rankDiff.diff = Math.abs(rankDiff.original - rankDiff.target)
 
+
 		// cascades: a file or rank path with distance of 3 will overide this
 		if ((fileDiff.diff + rankDiff.diff) === 3) {
 			pathDetails.path = 'l-shape';
@@ -116,7 +120,67 @@ PieceView = Backbone.View.extend({
 			pathDetails.path = false;
 		}
 
+		// determine if move was forward direction
+		if ((that.model.options.player === 'white' && (rankDiff.original - rankDiff.target) < 0) || (that.model.options.player === 'black' && (rankDiff.original - rankDiff.target) > 0)) {
+			pathDetails.direction = 'forward';
+		}
+
 		return pathDetails;
+	},
+
+	isPathKnown: function(pathDetails) {
+		var pathIsKnown = false;
+		if (pathDetails) {
+			this.model.paths.forEach(function(path) {
+				if (path === pathDetails.path) {
+					pathIsKnown = true;
+				}
+			})
+		}
+
+		if(!pathIsKnown) {
+			pathDetails.path = false
+		}
+	},
+
+	extraDependencies: function(pathDetails, newId) {
+		if (pathDetails.path && this.model.dependencies) {
+			// path is good but check these dependencies
+			var dependenciesPass = true;
+			var dependencies = this.model.dependencies[pathDetails.path]
+
+			if (dependencies.range < pathDetails.distance) {
+				dependenciesPass = false;
+				console.log('bad range')
+			}
+
+			if ((dependencies.direction !== undefined) && (dependencies.direction !== pathDetails.direction)) {
+					dependenciesPass = false;
+					console.log('bad direction')
+			}
+				
+
+			if (dependencies.occupied !== undefined	) {
+				if (dependencies.occupied === false) {
+					// for time-being referring to global collections
+					var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
+
+					if (pieceIsThere) {
+						dependenciesPass = false;
+					}
+				}
+
+				if (dependencies.occupied === this.model.options.opponent) {
+					var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
+
+					if ((!pieceIsThere) || (pieceIsThere.player !== this.model.options.opponent)) {
+						dependenciesPass = false;
+					}
+				}
+			}
+
+			return dependenciesPass;
+		}
 	},
 
 	findClosest: function(id) {
@@ -195,7 +259,7 @@ PieceView = Backbone.View.extend({
 		this.$el.css('z-index', '100')
 	},
 
-	pieceType: function() {
+	displayPiece: function() {
 		if (this.model !== undefined) {
 			this.$el.css({
 				background: 'url("../images/' + this.model.options.image + '.png") no-repeat center center',
