@@ -109,7 +109,17 @@ var blackPieces = new BlackPieces();
 				var notation = pieceToken.toUpperCase();
 			}
 
-			var piece = {
+			// var piece = {
+			// 	piece: pieceType[pieceToken],
+			// 	image: pieceTypeAndColor,
+			// 	token: pieceToken.toUpperCase(),
+			// 	position: id,
+			// 	notation: notation,
+			// 	player: player,
+			// 	opponent: opponent
+			// }
+
+			var piece = new Pieces[pieceType[pieceToken]]({
 				piece: pieceType[pieceToken],
 				image: pieceTypeAndColor,
 				token: pieceToken.toUpperCase(),
@@ -117,7 +127,7 @@ var blackPieces = new BlackPieces();
 				notation: notation,
 				player: player,
 				opponent: opponent
-			}
+			})
 
 			var pieceView = {
 				rank: rankValue,

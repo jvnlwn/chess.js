@@ -31,6 +31,7 @@ PieceView = Backbone.View.extend({
 	render: function() {
 		this.position();
 		var id = '#' + this.setId();
+
 		var elem = document.querySelector(id);
 		new Draggabilly(elem);
 
@@ -51,20 +52,39 @@ PieceView = Backbone.View.extend({
 			var dependenciesPass = that.extraDependencies(pathDetails, newId)
 			dependenciesPass = that.generalDependencies(pathDetails, dependenciesPass, newId)
 
+
 			if (dependenciesPass) {
 
-				var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
-				if (pieceIsThere) {
-					pieceIsThere.collection.remove(pieceIsThere)
-				}
+				// console.log('you moved')
 
-				that.$el.attr('id', newId)
-				that.options.cssPosition = newPercentages
-				that.$el.css(that.options.cssPosition)
-				that.model.instruct({moved: true})
+
 				that.model.set('position', newId)
 
+				// potential but not probable code:
+				// that.options.cssPosition = newPercentages
+				// that.$el.css(that.options.cssPosition)
+
+				// var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
+				// if (pieceIsThere) {
+				// 	pieceIsThere.collection.remove(pieceIsThere)
+				// }	
+
+				if (!that.isKingInCheck(that)) {
+					// the css and capture will resolve after king is determined safe
+					that.$el.attr('id', newId)
+					that.model.instruct({moved: true})
+					that.options.cssPosition = newPercentages
+					that.$el.css(that.options.cssPosition)
+
+					var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
+					if (pieceIsThere.get('player') === that.model.get('opponent')) {
+						pieceIsThere.collection.remove(pieceIsThere)
+					}			
+				}
+
+
 			} else {
+				that.model.set('position', id)
 				that.$el.css(that.options.cssPosition)
 			}
 		},100)
@@ -156,7 +176,7 @@ PieceView = Backbone.View.extend({
 		}
 
 		// determine if move was forward direction
-		if ((that.model.options.player === 'white' && (rankDiff.original - rankDiff.target) < 0) || (that.model.options.player === 'black' && (rankDiff.original - rankDiff.target) > 0)) {
+		if ((that.model.get('player') === 'white' && (rankDiff.original - rankDiff.target) < 0) || (that.model.get('player') === 'black' && (rankDiff.original - rankDiff.target) > 0)) {
 			pathDetails.direction = 'forward';
 		}
 
@@ -248,10 +268,10 @@ PieceView = Backbone.View.extend({
 					}
 				}
 
-				if (dependencies.occupied === this.model.options.opponent) {
+				if (dependencies.occupied === this.model.get('opponent')) {
 					var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
 
-					if ((!pieceIsThere) || (pieceIsThere.options.player !== this.model.options.opponent)) {
+					if ((!pieceIsThere) || (pieceIsThere.get('player') !== this.model.get('opponent'))) {
 						console.log('no opponent present')
 						dependenciesPass = false;
 					}
@@ -267,7 +287,7 @@ PieceView = Backbone.View.extend({
 		if (dependenciesPass) {
 			var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
 
-			if ((pieceIsThere) && (pieceIsThere.options.player !== this.model.options.opponent)) {
+			if ((pieceIsThere) && (pieceIsThere.get('player') !== this.model.get('opponent'))) {
 				// player already occupies target square
 				dependenciesPass = false;
 				console.log('you already here dude')
@@ -284,6 +304,31 @@ PieceView = Backbone.View.extend({
 			}
 		}
 		return dependenciesPass;
+	},
+
+	isKingInCheck: function(that) {
+		if (that.model.get('opponent') === 'black') {
+			var opponentPieces = blackPieces;
+		} else {
+			var opponentPieces = whitePieces;
+		}
+
+		// var queen = opponentPieces.findWhere({piece: 'queen'})
+		// console.log(queen)
+
+		var kingSquare = that.model.collection.findWhere({piece: 'king'})
+		var kingFromPiece = that.model.collection.findWhere({position: kingSquare.get('position')})
+		console.log('king position: ', kingSquare.get('position'))
+		console.log('king gotten by piece: ', kingSquare)
+		console.log('king gotten by position from piece: ', kingFromPiece)
+
+
+		// var pathDetails = that.isAPath(that, id, newId)
+		// that.isPathKnown(pathDetails)
+		// var dependenciesPass = that.extraDependencies(pathDetails, newId)
+		// dependenciesPass = that.generalDependencies(pathDetails, dependenciesPass, newId)
+
+		return false;
 	},
 
 	findClosest: function(id) {
@@ -365,8 +410,8 @@ PieceView = Backbone.View.extend({
 	displayPiece: function() {
 		if (this.model !== undefined) {
 			this.$el.css({
-				background: 'url("../images/' + this.model.options.image + '.png") no-repeat center center',
-				// background: 'url("../app/images/' + this.model.options.image + '.png") no-repeat center center',
+				background: 'url("../images/' + this.model.get('image') + '.png") no-repeat center center',
+				// background: 'url("../app/images/' + this.model.get('image') + '.png") no-repeat center center',
 				'background-size': 'cover',
 				width: '8%',
 				height: '8%',
