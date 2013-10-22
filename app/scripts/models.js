@@ -9,7 +9,8 @@ Pieces['pawn'] = Piece.extend({
 	},
 	// render: function(piece) {
 	render: function() {
-		console.log('yo ive been rendered')
+		this.set('notation', ''),
+		this.set('piece', 'pawn')
 			
 		// to be called everytime this.model's view is moved
 		this.instruct = function(options) {
@@ -47,6 +48,9 @@ Pieces['rook'] = Piece.extend({
 	},
 
 	render: function(){
+		this.set('notation', 'R'),
+		this.set('piece', 'rook')
+
 		this.instruct = function(options) {
 			this.moved = options.moved || false;
 			this.paths = ['file', 'rank']
@@ -61,6 +65,9 @@ Pieces['knight'] = Piece.extend({
 	},
 
 	render: function() {
+		this.set('notation', 'N'),
+		this.set('piece', 'knight')
+
 		this.instruct = function() {
 			this.paths = ['l-shape']
 		}
@@ -74,7 +81,10 @@ Pieces['bishop'] = Piece.extend({
 	},
 
 	render: function() {
-	this.instruct = function() {
+		this.set('notation', 'B'),
+		this.set('piece', 'bishop')
+
+		this.instruct = function() {
 			this.paths = ['diagonal']
 		}
 		return this.instruct({});
@@ -87,7 +97,10 @@ Pieces['queen'] = Piece.extend({
 	},
 
 	render: function() {
-	this.instruct = function() {
+		this.set('notation', 'Q'),
+		this.set('piece', 'queen')
+
+		this.instruct = function() {
 			this.paths = ['file', 'rank', 'diagonal']
 		}
 		return this.instruct({});
@@ -100,6 +113,9 @@ Pieces['king'] = Piece.extend({
 	},
 
 	render: function() {
+		this.set('notation', 'K'),
+		this.set('piece', 'king')
+
 		this.instruct = function(options) {
 			this.moved = options.moved || false;
 

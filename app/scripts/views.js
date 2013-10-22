@@ -88,10 +88,6 @@ PieceView = Backbone.View.extend({
 				that.$el.css(that.options.cssPosition)
 			}
 		},100)
-
-		// if (this.model.options.token === 'K' ) {
-		// 	console.log(this.model.castle('g8'))
-		// }
 	},
 
 	isAPath: function(that, id, newId) {
