@@ -319,8 +319,7 @@ PieceView = Backbone.View.extend({
 		var kingSquare = that.model.collection.findWhere({piece: 'king'})
 		var kingFromPiece = that.model.collection.findWhere({position: kingSquare.get('position')})
 		console.log('king position: ', kingSquare.get('position'))
-		console.log('king gotten by piece: ', kingSquare)
-		console.log('king gotten by position from piece: ', kingFromPiece)
+
 
 
 		// var pathDetails = that.isAPath(that, id, newId)
