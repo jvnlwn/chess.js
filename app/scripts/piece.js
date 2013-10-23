@@ -4,8 +4,35 @@ Piece = Backbone.Model.extend({
 		var dependenciesPass = pathDetails.path;
 
 		if (dependenciesPass && this.extraDependencies) {
-			dependenciesPass = this.extraDependencies(pathDetails);
+			dependenciesPass = this.extraDependencies(pathDetails).dependenciesPass;
 		}
+
+		// if (dependenciesPass) {
+		// 	var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
+
+		// 	if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
+
+		// 		// player already occupies target square
+		// 		if (!pathDetails.targetting) {
+		// 			dependenciesPass = false;
+		// 		}
+		// 		console.log('you already here dude')
+
+		// 	} else if (pathDetails.path !== 'l-shape') {
+
+		// 		console.log(pathDetails.innerSquares)
+
+		// 		pathDetails.innerSquares.forEach(function(square) {
+		// 			var pieceIsThere = blackPieces.findWhere({position: square}) || whitePieces.findWhere({position: square});
+
+		// 			if (pieceIsThere) {
+		// 				// path is blocked
+		// 				dependenciesPass = false;
+		// 				console.log('dude a piece is in your way')
+		// 			}
+		// 		})
+		// 	}
+		// }
 
 		if (dependenciesPass) {
 			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
@@ -13,10 +40,17 @@ Piece = Backbone.Model.extend({
 			if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
 
 				// player already occupies target square
-				dependenciesPass = false;
+
+				if (!pathDetails.targeting) {
+					dependenciesPass = false;
+				}
 				console.log('you already here dude')
 
-			} else if (pathDetails.path !== 'l-shape') {
+			}
+
+			if (pathDetails.path !== 'l-shape') {
+
+				console.log(pathDetails.innerSquares)
 
 				pathDetails.innerSquares.forEach(function(square) {
 					var pieceIsThere = blackPieces.findWhere({position: square}) || whitePieces.findWhere({position: square});
@@ -29,7 +63,9 @@ Piece = Backbone.Model.extend({
 				})
 			}
 		}
-		return dependenciesPass;
+		pathDetails.dependenciesPass = dependenciesPass
+
+		return pathDetails;
 	},
 
 	isPathKnown: function(pathDetails) {

@@ -17,19 +17,25 @@ Pieces['king'] = Piece.extend({
 				this.range = 2;
 			}
 
-			this.castle = function(targetSquare) {
-				var file = targetSquare.slice(0, 1)
-				var rank = targetSquare.slice(1)
+			this.castle = function(pathDetails) {
+				var file = pathDetails.newId.slice(0, 1)
+				var rank = pathDetails.newId.slice(1)
 
 				if (file === 'g') {
 					var targetRook = 'h' + rank
+					var innerSquares = ['f' + rank];
 				} else {
 					var targetRook = 'a' + rank
+					var innerSquares = ['c' + rank, 'd' + rank];
 				}
 
 				var rook = this.collection.findWhere({position: targetRook})
 
-				return rook.moved || rook
+				var dependenciesPass = rook.moved;
+
+				var response = [dependenciesPass, innerSquares]
+
+				return response;
 			}
 
 			this.set('dependencies', {
@@ -59,8 +65,21 @@ Pieces['king'] = Piece.extend({
 				console.log('bad range')
 			}
 
+			// if (pathDetails.distance === 2) {
+			// 	var response =  this.castle(pathDetails)
+			// 	if (!response.dependenciesPass) {
+			// 		dependenciesPass = false;
+			// 	} else {
+			// 		pathDetails.innerSquares = response.innerSquares;
+			// 	}
+			// }
+
+			// gotta finish this idea. return pathDetails  . . get that working with other functions
+
 		}
 
-		return dependenciesPass;
+		pathDetails.dependenciesPass = dependenciesPass
+
+		return pathDetails;
 	}
 })

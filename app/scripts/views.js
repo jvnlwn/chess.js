@@ -44,28 +44,36 @@ PieceView = Backbone.View.extend({
 		var id = this.$el.attr('id');
 
 		setTimeout(function(){
-			// that.reassignId(that, that.findClosest(id))
-			var newPercentages = chess.utilities.findClosest(id)
 
-			var newId = chess.utilities.reassignId(newPercentages)
+			var pathDetails = {
+				path:     false,
+				distance: 0,
+				fileDiff: {},
+				rankDiff: {},
+				id:       id
+			}
 
-			var pathDetails = chess.utilities.isAPath(that, id, newId)
+			pathDetails.newPercentages = chess.utilities.findClosest(pathDetails)
 
-			pathDetails.newId = newId;
+			pathDetails.newId = chess.utilities.reassignId(pathDetails)
 
-			pathDetails = that.model.isPathKnown(pathDetails)
+			pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails))
 
-			// var dependenciesPass = that.extraDependencies(pathDetails, newId)
-			// dependenciesPass = that.generalDependencies(pathDetails, dependenciesPass, newId)
-			var dependenciesPass = that.model.dependencies(pathDetails)
+			pathDetails = $.extend(pathDetails, that.model.isPathKnown(pathDetails))
+
+			// pathDetails.dependenciesPass = that.model.dependencies(pathDetails)
+			pathDetails = $.extend(pathDetails, that.model.dependencies(pathDetails))
 
 
-			if (dependenciesPass) {
+			if (pathDetails.dependenciesPass) {
 
 				// console.log('you moved')
 
 
-				that.model.set('position', newId)
+				// that.model.set('position', newId)
+				that.model.set('position', pathDetails.newId)
+				console.log('testing this position: ', that.model.get('position'))
+				chess.utilities.isDefended(whitePieces, that.model.get('position'))
 
 				// potential but not probable code:
 				// that.options.cssPosition = newPercentages
@@ -78,12 +86,12 @@ PieceView = Backbone.View.extend({
 
 				if (!that.isKingInCheck(that)) {
 					// the css and capture will resolve after king is determined safe
-					that.$el.attr('id', newId)
+					that.$el.attr('id', pathDetails.newId)
 					that.model.instruct({moved: true})
-					that.options.cssPosition = newPercentages
+					that.options.cssPosition = pathDetails.newPercentages
 					that.$el.css(that.options.cssPosition)
 
-					var pieceIsThere = blackPieces.findWhere({position: newId}) || whitePieces.findWhere({position: newId}) || false;
+					var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId}) || false;
 					if (pieceIsThere.get('player') === that.model.get('opponent')) {
 						pieceIsThere.collection.remove(pieceIsThere)
 					}			
@@ -127,8 +135,7 @@ PieceView = Backbone.View.extend({
 
 	displayPiece: function() {
 		this.$el.css({
-			// background: 'url("../images/' + this.model.get('image') + '.png") no-repeat center center',
-			background: 'url("../app/images/' + this.model.get('image') + '.png") no-repeat center center',
+			background: 'url("../images/' + this.model.get('image') + '.png") no-repeat center center',
 			'background-size': 'cover',
 			width: '8%',
 			height: '8%',

@@ -1,5 +1,5 @@
-chess.utilities.findClosest = function(id) {
-	var id = '#' + id;	
+chess.utilities.findClosest = function(pathDetails) {
+	var id = '#' + pathDetails.id;	
 
 	var actual = {
 		left: parseInt(($(id).css('left')).slice(0, -2)),

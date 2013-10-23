@@ -1,21 +1,14 @@
-chess.utilities.isAPath = function(that, id, newId) {
+chess.utilities.isAPath = function(pathDetails) {
 	var setup = chess.setup;
 
-	var pathDetails = {
-		path:     false,
-		distance: 0,
-		fileDiff: {},
-		rankDiff: {}
-	}
-
 	var files = {
-		original: id.slice(0, 1),
-		target:   newId.slice(0, 1)
+		original: pathDetails.id.slice(0, 1),
+		target:   pathDetails.newId.slice(0, 1)
 	}
 
 	var ranks = {
-		original: id.slice(1),
-		target:   newId.slice(1)
+		original: pathDetails.id.slice(1),
+		target:   pathDetails.newId.slice(1)
 	}
 
 	var fileDiff = {
