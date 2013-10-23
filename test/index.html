@@ -4,10 +4,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Mocha Spec Runner</title>
     <link rel="stylesheet" href="lib/mocha/mocha.css">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
 </head>
 <body>
     <div id="mocha" style="background: #D3D3D3; position:relative; z-index: 101"></div>
@@ -20,49 +16,35 @@
     <div class="chess-board" style="width: 640px; height: 640px; margin: 50px auto; position: relative"></div>
 
     <script>mocha.setup('bdd')</script>
-    <script>mocha.setup({ignoreLeaks:true})</script>
     <!-- assertion framework -->
     <script src="lib/chai.js"></script>
     <script>var expect = chai.expect</script>
 
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/jquery.js"></script>
-    <script src="bower_components/underscore/underscore.js"></script>
-    <script src="bower_components/backbone/backbone.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-        e.src='//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create','UA-XXXXX-X');ga('send','pageview');
-    </script>
 
-    <!-- build:js scripts/main.js -->
-    <script src="scripts/draggabilly.js"></script>
-    <script src="scripts/chess-setup.js"></script>
-    <script src="scripts/chess-utilities-newGame.js"></script>
-    <script src="scripts/chess-utilities-findClosest.js"></script>
-    <script src="scripts/chess-utilities-reassignId.js"></script>
-    <script src="scripts/chess-utilities-innerSquares.js"></script>
-    <script src="scripts/chess-utilities-isAPath.js"></script>
-    <script src="scripts/chess-utilities-isDefended.js"></script>
-    <script src="scripts/views.js"></script>
-    <script src="scripts/piece.js"></script>
-    <script src="scripts/piece-pawn.js"></script>
-    <script src="scripts/piece-rook.js"></script>
-    <script src="scripts/piece-knight.js"></script>
-    <script src="scripts/piece-bishop.js"></script>
-    <script src="scripts/piece-queen.js"></script>
-    <script src="scripts/piece-king.js"></script>
-    <script src="scripts/collections.js"></script>
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
+
+    <!-- include source files here... -->
+    <script src="../app/bower_components/jquery/jquery.js"></script>
+    <script src="../app/bower_components/underscore/underscore.js"></script>
+    <script src="../app/bower_components/backbone/backbone.js"></script>
+    <script src="../app/scripts/draggabilly.js"></script>
+    <script src="../app/scripts/chess-setup.js"></script>
+    <script src="../app/scripts/chess-utilities-newGame.js"></script>
+    <script src="../app/scripts/chess-utilities-findClosest.js"></script>
+    <script src="../app/scripts/chess-utilities-reassignId.js"></script>
+    <script src="../app/scripts/chess-utilities-innerSquares.js"></script>
+    <script src="../app/scripts/chess-utilities-isAPath.js"></script>
+    <script src="../app/scripts/chess-utilities-isDefended.js"></script>
+    <script src="../app/scripts/views.js"></script>
+    <script src="../app/scripts/piece.js"></script>
+    <script src="../app/scripts/piece-pawn.js"></script>
+    <script src="../app/scripts/piece-rook.js"></script>
+    <script src="../app/scripts/piece-knight.js"></script>
+    <script src="../app/scripts/piece-bishop.js"></script>
+    <script src="../app/scripts/piece-queen.js"></script>
+    <script src="../app/scripts/piece-king.js"></script>
+    <script src="../app/scripts/collections.js"></script>
+    <script src="../app/scripts/main.js"></script>
 
     <!-- include spec files here... -->
     <script src="spec/test.js"></script>

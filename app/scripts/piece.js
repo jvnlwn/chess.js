@@ -7,33 +7,6 @@ Piece = Backbone.Model.extend({
 			dependenciesPass = this.extraDependencies(pathDetails).dependenciesPass;
 		}
 
-		// if (dependenciesPass) {
-		// 	var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
-
-		// 	if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
-
-		// 		// player already occupies target square
-		// 		if (!pathDetails.targetting) {
-		// 			dependenciesPass = false;
-		// 		}
-		// 		console.log('you already here dude')
-
-		// 	} else if (pathDetails.path !== 'l-shape') {
-
-		// 		console.log(pathDetails.innerSquares)
-
-		// 		pathDetails.innerSquares.forEach(function(square) {
-		// 			var pieceIsThere = blackPieces.findWhere({position: square}) || whitePieces.findWhere({position: square});
-
-		// 			if (pieceIsThere) {
-		// 				// path is blocked
-		// 				dependenciesPass = false;
-		// 				console.log('dude a piece is in your way')
-		// 			}
-		// 		})
-		// 	}
-		// }
-
 		if (dependenciesPass) {
 			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
 
@@ -44,13 +17,11 @@ Piece = Backbone.Model.extend({
 				if (!pathDetails.targeting) {
 					dependenciesPass = false;
 				}
-				console.log('you already here dude')
+				// console.log('you already here dude')
 
 			}
 
 			if (pathDetails.path !== 'l-shape') {
-
-				console.log(pathDetails.innerSquares)
 
 				pathDetails.innerSquares.forEach(function(square) {
 					var pieceIsThere = blackPieces.findWhere({position: square}) || whitePieces.findWhere({position: square});
@@ -58,7 +29,7 @@ Piece = Backbone.Model.extend({
 					if (pieceIsThere) {
 						// path is blocked
 						dependenciesPass = false;
-						console.log('dude a piece is in your way')
+						// console.log('dude a piece is in your way')
 					}
 				})
 			}

@@ -61,19 +61,21 @@ PieceView = Backbone.View.extend({
 
 			pathDetails = $.extend(pathDetails, that.model.isPathKnown(pathDetails))
 
-			// pathDetails.dependenciesPass = that.model.dependencies(pathDetails)
 			pathDetails = $.extend(pathDetails, that.model.dependencies(pathDetails))
 
 
 			if (pathDetails.dependenciesPass) {
 
-				// console.log('you moved')
-
-
 				// that.model.set('position', newId)
 				that.model.set('position', pathDetails.newId)
 				console.log('testing this position: ', that.model.get('position'))
-				chess.utilities.isDefended(whitePieces, that.model.get('position'))
+
+				that.$el.attr('id', pathDetails.newId)
+				console.log(that.$el.attr('id'))
+
+				chess.setup.squares.forEach(function(square, index){ 
+				    chess.utilities.isDefended(whitePieces, square.position, index)
+				})
 
 				// potential but not probable code:
 				// that.options.cssPosition = newPercentages
@@ -86,7 +88,7 @@ PieceView = Backbone.View.extend({
 
 				if (!that.isKingInCheck(that)) {
 					// the css and capture will resolve after king is determined safe
-					that.$el.attr('id', pathDetails.newId)
+					// that.$el.attr('id', pathDetails.newId)
 					that.model.instruct({moved: true})
 					that.options.cssPosition = pathDetails.newPercentages
 					that.$el.css(that.options.cssPosition)
@@ -136,6 +138,7 @@ PieceView = Backbone.View.extend({
 	displayPiece: function() {
 		this.$el.css({
 			background: 'url("../images/' + this.model.get('image') + '.png") no-repeat center center',
+			// background: 'url("../app/images/' + this.model.get('image') + '.png") no-repeat center center',
 			'background-size': 'cover',
 			width: '8%',
 			height: '8%',

@@ -1,11 +1,16 @@
-chess.utilities.isDefended = function(collection, targetPiece) {
-	$('#' + targetPiece).css('border', 'none')
-	var defended = false;
-	collection.each(function(piece) {
-		// $('#' + piece.get('position')).css('border', 'none')
-		// console.log(piece)
+chess.utilities.isDefended = function(collection, targetPiece, index) {
+	var setup = chess.setup;
+	var i = index;
 
-		
+	var number = setup.rank[Math.floor(i / 8)];
+	var klass = '.' + setup.squares[i].position;
+
+	setup.squares[index].defended = false;
+	$(klass).css('background', setup.colorCycles[number % 2 + 1][i % 2])
+
+	setup.squares[i].defended = false;
+
+	collection.each(function(piece, index) {
 
 		if (piece.get('position') !== targetPiece) {
 			var pathDetails = {
@@ -19,28 +24,15 @@ chess.utilities.isDefended = function(collection, targetPiece) {
 			pathDetails = $.extend(pathDetails, piece.isPathKnown(pathDetails))
 			pathDetails = $.extend(pathDetails, piece.dependencies(pathDetails))
 
-			console.log(pathDetails.dependenciesPass)
-
 			if (pathDetails.dependenciesPass && pathDetails.canTarget) {
-				console.log('** ' + piece.get('piece') + ' at ' + piece.get('position') + ' has ' + pathDetails.path)
 
-				// $('#' + piece.get('position')).css('border', '4px solid blue')
-				// $('#' + targetPiece).css('border', '4px solid red')
-				defended = true;
+				setup.squares[i].defended = true;
+
+				$('.' + targetPiece).css('background', 'rgba(145, 29, 29, .3)')
+				$('.' + targetPiece).css('background', 'rgba(177, 142, 238, .3)')
 			}
 
-		}
-
-		if (defended) {
-			console.log('defended')
-			$('#' + targetPiece).css('border', '4px solid yellow')
 		}
 	})
 }
 
-
-// find all white defended
-
-// whitePieces.each(function(piece){ 
-//     chess.utilities.isDefended(whitePieces, piece.get('position'))
-// })

@@ -62,7 +62,7 @@ Pieces['king'] = Piece.extend({
 
 			if (pathDetails.distance > dependencies.range) {
 				dependenciesPass = false;
-				console.log('bad range')
+				// console.log('bad range')
 			}
 
 			// if (pathDetails.distance === 2) {

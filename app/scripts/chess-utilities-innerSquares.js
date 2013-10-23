@@ -6,9 +6,6 @@ chess.utilities.innerSquares = function (array, change, unchanged, pathDetails) 
 		direction: 'greater'
 	};
 
-
-	
-
 	if (pathDetails.distance > 1) {
 		if (change.original < change.target) {
 			startingSquare = change.original + 1;
