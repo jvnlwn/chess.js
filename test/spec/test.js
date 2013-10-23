@@ -121,7 +121,7 @@
 	    	expect(newPositionPercentages.left).to.equal(expectedLeft[targetId.slice(0, 1)]);
 			expect(newPositionPercentages.top).to.equal(expectedTop[targetId.slice(1)]);
 			done();
-		}, 400)
+		}, 150)
 	}
 
 	// stubbing out positions that resemble a piece's position on player's mouseup. For easy use in testing.

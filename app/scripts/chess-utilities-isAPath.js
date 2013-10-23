@@ -1,4 +1,6 @@
 chess.utilities.isAPath = function(that, id, newId) {
+	var setup = chess.setup;
+
 	var pathDetails = {
 		path:     false,
 		distance: 0,
@@ -17,13 +19,13 @@ chess.utilities.isAPath = function(that, id, newId) {
 	}
 
 	var fileDiff = {
-		original: that.options.fileArray.indexOf(files.original),
-		target:   that.options.fileArray.indexOf(files.target)
+		original: setup.file.indexOf(files.original),
+		target:   setup.file.indexOf(files.target)
 	}
 
 	var rankDiff = {
-		original: that.options.rankArray.indexOf(ranks.original),
-		target:   that.options.rankArray.indexOf(ranks.target)
+		original: setup.rank.indexOf(ranks.original),
+		target:   setup.rank.indexOf(ranks.target)
 	}
 
 	fileDiff.diff = Math.abs(fileDiff.original - fileDiff.target)
@@ -42,21 +44,21 @@ chess.utilities.isAPath = function(that, id, newId) {
 	if (fileDiff.diff === 0) {
 		pathDetails.path = 'file';
 		pathDetails.distance = rankDiff.diff;
-		pathDetails.innerSquares = innerSquares(that.options.rankArray, rankDiff, files).squares
+		pathDetails.innerSquares = chess.utilities.innerSquares(setup.rank, rankDiff, files, pathDetails).squares
 	}
 
 	if (rankDiff.diff === 0) {
 		pathDetails.path = 'rank';
 		pathDetails.distance = fileDiff.diff;
-		pathDetails.innerSquares = innerSquares(that.options.fileArray, fileDiff, ranks).squares
+		pathDetails.innerSquares = chess.utilities.innerSquares(setup.file, fileDiff, ranks, pathDetails).squares
 	}
 
 	if (Math.abs(fileDiff.diff - rankDiff.diff) === 0) {
 		pathDetails.path = 'diagonal';
 		pathDetails.distance = fileDiff.diff;
 
-		var rankSlice = innerSquares(that.options.rankArray, rankDiff, files)
-		var fileSlice = innerSquares(that.options.fileArray, fileDiff, ranks)
+		var rankSlice = chess.utilities.innerSquares(setup.rank, rankDiff, files, pathDetails)
+		var fileSlice = chess.utilities.innerSquares(setup.file, fileDiff, ranks, pathDetails)
 
 		var combinedSlices = [];
 		var x = rankSlice.squares.length
@@ -77,47 +79,6 @@ chess.utilities.isAPath = function(that, id, newId) {
 	// piece wasn't moved from square
 	if (pathDetails.distance === 0) {
 		pathDetails.path = false;
-	}
-
-	// determine if move was forward direction
-	if ((that.model.get('player') === 'white' && (rankDiff.original - rankDiff.target) < 0) || (that.model.get('player') === 'black' && (rankDiff.original - rankDiff.target) > 0)) {
-		pathDetails.direction = 'forward';
-	}
-
-	function innerSquares(array, change, unchanged) {
-		var startingSquare;
-		var endingSquare;
-		var inBetween = {
-			squares: [],
-			direction: 'greater'
-		};
-
-		if (pathDetails.distance > 1) {
-			if (change.original < change.target) {
-				startingSquare = change.original + 1;
-				endingSquare = change.target;
-			} else {
-				startingSquare = change.target + 1;
-				endingSquare = change.original;
-				inBetween.direction = 'lesser';
-			}		
-		}
-
-		for(i = startingSquare; i < endingSquare; i++) {
-			if (pathDetails.path === 'rank') {
-				inBetween.squares.push(array[i].toString() + unchanged.original)
-			}
-
-			if (pathDetails.path === 'file') {
-				inBetween.squares.push(unchanged.original + array[i].toString())
-			}
-
-			if (pathDetails.path === 'diagonal') {
-				inBetween.squares.push(array[i])
-			}
-		}
-
-		return inBetween
 	}
 	
 	return pathDetails;
