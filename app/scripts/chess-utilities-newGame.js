@@ -8,7 +8,7 @@ chess.utilities.newGame = function() {
 		var fileValue = setup.file[i % 8];
 		var id = fileValue + rankValue;
 
-		setup.squares.push({position: id});
+		setup.squares.push(id);
 
 		var cssPosition = {
 			top: setup.percentages.top[rankValue],
@@ -60,7 +60,7 @@ chess.utilities.newGame = function() {
 			}
 
 			// possibly reference allPieces later
-			allPieces.add(piece)
+			// allPieces.add(piece)
 
 			collections[player].add(piece)
 			pieceView.model = collections[player].last()
