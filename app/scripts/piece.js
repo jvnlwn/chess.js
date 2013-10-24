@@ -72,59 +72,73 @@ Piece = Backbone.Model.extend({
 
 		setTimeout(function(){
 
-			pathDetails.newPercentages = chess.utilities.findClosest(pathDetails)
-
-			pathDetails.newId = chess.utilities.reassignId(pathDetails)
-
-			pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails))
-
-			pathDetails = $.extend(pathDetails, that.isPathKnown(pathDetails))
-
-			pathDetails = $.extend(pathDetails, that.dependencies(pathDetails))
+			pathDetails = that.checkMove(pathDetails)
 
 			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
-			if (pieceIsThere) {
-				pieceIsThere.set('position', 'MIA');
-			}
 
-			that.set('position', pathDetails.newId)
+			pathDetails.dependenciesPass = that.checkKing(pathDetails, pieceIsThere)
 
-			pathDetails.dependenciesPass = chess.utilities.isKingInCheck(that.get('player'), pathDetails)
-			console.log(pathDetails.dependenciesPass)
-			 // = chess.utilities.isKingInCheck(that.get('opponent'), pathDetails)
-			console.log(pathDetails.dependenciesPass)
-			
-
-			if (pathDetails.dependenciesPass) {
-				// the css and capture will resolve after king is determined safe
-				// that.$el.attr('id', pathDetails.newId)
-				that.instruct({moved: true})
-
-				view.options.cssPosition = pathDetails.newPercentages
-				view.$el.css(view.options.cssPosition)
-				
-				if (pieceIsThere) {
-					if (pieceIsThere.get('player') === that.get('opponent')) {
-						pieceIsThere.collection.remove(pieceIsThere)
-					}				
-				}
-
-				$('#' + pathDetails.id).attr('id', pathDetails.newId)
-
-			} else {
-				that.set('position', pathDetails.id)
-				$('#' + pathDetails.id).css(view.options.cssPosition)
-				if (pieceIsThere) {
-					pieceIsThere.set('position', pathDetails.newId);
-				}
-			}
+			that.finalizeMove(pathDetails, pieceIsThere, view)
 
 			return pathDetails;
+
 		},100)
 
 	},
 
-	
+	checkMove: function(pathDetails) {
+
+		pathDetails.newPercentages = chess.utilities.findClosest(pathDetails)
+
+		pathDetails.newId = chess.utilities.reassignId(pathDetails)
+
+		pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails))
+
+		pathDetails = $.extend(pathDetails, this.isPathKnown(pathDetails))
+
+		pathDetails = $.extend(pathDetails, this.dependencies(pathDetails))
+
+		return pathDetails;
+	},
+
+	checkKing: function(pathDetails, pieceIsThere) {
+
+		if (pieceIsThere) {
+			pieceIsThere.set('position', 'MIA');
+		}
+
+		this.set('position', pathDetails.newId)
+
+		return chess.utilities.isKingInCheck(this.get('player'), pathDetails);
+
+	},
+
+	finalizeMove: function(pathDetails, pieceIsThere, view) {
+		if (pathDetails.dependenciesPass) {
+
+			this.instruct({moved: true})
+
+			view.options.cssPosition = pathDetails.newPercentages
+			view.$el.css(view.options.cssPosition)
+			view.$el.attr('id', pathDetails.newId)
+			
+			if (pieceIsThere) {
+				if (pieceIsThere.get('player') === this.get('opponent')) {
+					pieceIsThere.collection.remove(pieceIsThere)
+				}				
+			}
+		} 
+
+		else {
+			this.set('position', pathDetails.id)
+
+			view.$el.css(view.options.cssPosition)
+
+			if (pieceIsThere) {
+				pieceIsThere.set('position', pathDetails.newId);
+			}
+		}
+	}
 })
 
 Pieces = {};
