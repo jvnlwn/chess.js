@@ -80,8 +80,13 @@ Piece = Backbone.Model.extend({
 
 			that.finalizeMove(pathDetails, pieceIsThere, view)
 
-			// if oppenent in check and if so, can king move
-			chess.utilities.canKingMove(pathDetails, that)
+			if (pathDetails.dependenciesPass) {
+				// if oppenent in check and if so, can king move
+				var response = chess.utilities.canKingMove(pathDetails, that)
+
+				// if king can not move, check for if a piece can save king
+				chess.utilities.canPieceSaveKing(response)					
+			}
 
 			return pathDetails;
 

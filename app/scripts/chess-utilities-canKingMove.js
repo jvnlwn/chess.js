@@ -13,6 +13,7 @@ chess.utilities.canKingMove = function(pathDetails, that) {
 	var kingCanMove = false;
 
 	if(!chess.utilities.isKingInCheck(player, pathDetails)) {
+		console.log('king is in check')
 
 		chess.setup.squares.forEach(function(square) {
 			var pathDetails = {
@@ -64,6 +65,13 @@ chess.utilities.canKingMove = function(pathDetails, that) {
 	} else {
 		// opponent king can not move out of check
 		console.log(player + ' King cant move!!')
+	}
+
+	console.log(kingCanMove)
+
+	return {
+		kingCanMove: kingCanMove,
+		collection: collection
 	}
 }
 

@@ -27,7 +27,6 @@ chess.utilities.isTargeted = function(collection, targetPiece, index) {
 			if (pathDetails.dependenciesPass && pathDetails.canTarget && setup.attackedSquares.indexOf(targetPiece) === -1) {
 				setup.attackedSquares.push(targetPiece)
 
-				$('.' + targetPiece).css('background', 'rgba(145, 29, 29, .3)')
 				$('.' + targetPiece).css('background', 'rgba(177, 142, 238, .3)')
 			}
 
