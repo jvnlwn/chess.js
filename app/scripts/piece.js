@@ -72,13 +72,16 @@ Piece = Backbone.Model.extend({
 
 		setTimeout(function(){
 
-			pathDetails = that.checkMove(pathDetails)
+			pathDetails = that.checkMove(that.targetSquare(pathDetails))
 
 			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
 
-			pathDetails.dependenciesPass = that.checkKing(pathDetails, pieceIsThere)
+			pathDetails.dependenciesPass = that.checkKing(that.get('player'), pathDetails, pieceIsThere)
 
 			that.finalizeMove(pathDetails, pieceIsThere, view)
+
+			// if oppenent in check and if so, can king move
+			chess.utilities.canKingMove(pathDetails, that)
 
 			return pathDetails;
 
@@ -86,30 +89,37 @@ Piece = Backbone.Model.extend({
 
 	},
 
-	checkMove: function(pathDetails) {
+	targetSquare: function(pathDetails) {
 
-		pathDetails.newPercentages = chess.utilities.findClosest(pathDetails)
+		pathDetails.newPercentages = chess.utilities.findClosest(pathDetails);
 
-		pathDetails.newId = chess.utilities.reassignId(pathDetails)
-
-		pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails))
-
-		pathDetails = $.extend(pathDetails, this.isPathKnown(pathDetails))
-
-		pathDetails = $.extend(pathDetails, this.dependencies(pathDetails))
+		pathDetails.newId = chess.utilities.reassignId(pathDetails);
 
 		return pathDetails;
 	},
 
-	checkKing: function(pathDetails, pieceIsThere) {
+	checkMove: function(pathDetails) {
+
+		pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails));
+
+		pathDetails = $.extend(pathDetails, this.isPathKnown(pathDetails));
+
+		pathDetails = $.extend(pathDetails, this.dependencies(pathDetails));
+
+		return pathDetails;
+	},
+
+	checkKing: function(side, pathDetails, pieceIsThere) {
 
 		if (pieceIsThere) {
-			pieceIsThere.set('position', 'MIA');
+			if (pieceIsThere.get('player') !== this.get('player')) {
+				pieceIsThere.set('position', 'MIA');	
+			}
 		}
 
 		this.set('position', pathDetails.newId)
 
-		return chess.utilities.isKingInCheck(this.get('player'), pathDetails);
+		return chess.utilities.isKingInCheck(side, pathDetails);
 
 	},
 
@@ -135,7 +145,9 @@ Piece = Backbone.Model.extend({
 			view.$el.css(view.options.cssPosition)
 
 			if (pieceIsThere) {
-				pieceIsThere.set('position', pathDetails.newId);
+				if (pieceIsThere.get('position') === 'MIA') {
+					pieceIsThere.set('position', pathDetails.newId);
+				}
 			}
 		}
 	}

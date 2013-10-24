@@ -1,4 +1,4 @@
-chess.utilities.isDefended = function(collection, targetPiece, index) {
+chess.utilities.isTargeted = function(collection, targetPiece, index) {
 	var setup = chess.setup;
 	var i = index;
 
