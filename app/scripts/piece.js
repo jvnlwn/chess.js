@@ -1,24 +1,22 @@
 Piece = Backbone.Model.extend({
 
 	dependencies: function(pathDetails) {
-		var dependenciesPass = pathDetails.path;
+		pathDetails.dependenciesPass = pathDetails.path;
 
-		if (dependenciesPass && this.extraDependencies) {
-			dependenciesPass = this.extraDependencies(pathDetails).dependenciesPass;
+		if (pathDetails.dependenciesPass && this.extraDependencies) {
+			pathDetails = $.extend(this.extraDependencies(pathDetails));
 		}
 
-		if (dependenciesPass) {
+		if (pathDetails.dependenciesPass) {
 			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
 
 			if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
-
 				// player already occupies target square
 
 				if (!pathDetails.targeting) {
-					dependenciesPass = false;
+					// check if targeting function is running
+					pathDetails.dependenciesPass = false;
 				}
-				// console.log('you already here dude')
-
 			}
 
 			if (pathDetails.path !== 'l-shape') {
@@ -28,13 +26,11 @@ Piece = Backbone.Model.extend({
 
 					if (pieceIsThere) {
 						// path is blocked
-						dependenciesPass = false;
-						// console.log('dude a piece is in your way')
+						pathDetails.dependenciesPass = false;
 					}
 				})
 			}
 		}
-		pathDetails.dependenciesPass = dependenciesPass
 
 		return pathDetails;
 	},
@@ -125,12 +121,11 @@ Piece = Backbone.Model.extend({
 	finalizeMove: function(pathDetails, pieceIsThere, view) {
 		if (pathDetails.dependenciesPass) {
 
-			this.instruct({moved: true})
-			this.resetPawns();
+			this.instruct();
 
-			view.options.cssPosition = pathDetails.newPercentages
-			view.$el.css(view.options.cssPosition)
-			view.$el.attr('id', pathDetails.newId)
+			view.options.cssPosition = pathDetails.newPercentages;
+			view.$el.css(view.options.cssPosition);
+			view.$el.attr('id', pathDetails.newId);
 			
 			if (pieceIsThere) {
 				if (pieceIsThere.get('player') === this.get('opponent')) {
@@ -140,9 +135,9 @@ Piece = Backbone.Model.extend({
 		} 
 
 		else {
-			this.set('position', pathDetails.id)
+			this.set('position', pathDetails.id);
 
-			view.$el.css(view.options.cssPosition)
+			view.$el.css(view.options.cssPosition);
 
 			if (pieceIsThere) {
 				if (pieceIsThere.get('position') === 'MIA') {
@@ -158,9 +153,7 @@ Piece = Backbone.Model.extend({
 		pawns.forEach(function(pawn) {
 			pawn.unset('targetSquare')
 			pawn.unset('enemyPawn')
-			// pawn.set('enPassant', false);
 		})
-
 	}
 })
 

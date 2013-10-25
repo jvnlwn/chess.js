@@ -4,28 +4,21 @@ Pieces['king'] = Piece.extend({
 	},
 
 	render: function() {
-		this.set('notation', 'K')
-		this.set('piece', 'king')
-		this.set('paths', ['file', 'rank', 'diagonal'])
-		this.set('range', 1)
+		this.set('notation', 'K');
+		this.set('piece', 'king');
+		this.set('paths', ['file', 'rank', 'diagonal']);
+		this.set('range', 1);
+		this.set('moved', false);
+	},
 
-		this.instruct = function(options) {
-			this.moved = options.moved || false;
-
-			if (this.moved) {
-				this.range = 1;
-			} else {
-				this.range = 2;
-			}
-		}
-		return this.instruct({});
+	instruct: function(options) {
+		this.resetPawns();
+		this.set('moved', true);
 	},
 
 	extraDependencies: function(pathDetails) {
 
-		// console.log('king deps')
-
-		var dependenciesPass = true;
+		pathDetails.dependenciesPass = true;
 
 		if (pathDetails.path) {
 			// path is good but check these dependencies
@@ -34,16 +27,13 @@ Pieces['king'] = Piece.extend({
 				var response = this.castle(pathDetails);
 
 				if (response.dependenciesPass && !this.moved) {
-					dependenciesPass = true;
+					pathDetails.dependenciesPass = true;
 					pathDetails.innerSquares = response.innerSquares;
 				} else {
-					dependenciesPass = false;
+					pathDetails.dependenciesPass = false;
 				}
 			}
-
 		}
-
-		pathDetails.dependenciesPass = dependenciesPass
 
 		return pathDetails;
 	},
@@ -65,7 +55,7 @@ Pieces['king'] = Piece.extend({
 		var rook = this.collection.findWhere({position: targetRook})
 
 		if (rook) {
-			dependenciesPass = !rook.moved;	
+			dependenciesPass = !rook.get('moved');	
 		}
 
 		var response = {

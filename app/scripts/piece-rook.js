@@ -4,14 +4,14 @@ Pieces['rook'] = Piece.extend({
 	},
 
 	render: function(){
-		this.set('notation', 'R'),
-		this.set('piece', 'rook'),
-		this.set('paths', ['file', 'rank']),
+		this.set('notation', 'R');
+		this.set('piece', 'rook');
+		this.set('paths', ['file', 'rank']);
+		this.set('moved', false)
+	},
 
-		this.instruct = function(options) {
-			this.moved = options.moved || false;
-			this.paths = ['file', 'rank']
-		}
-		return this.instruct({});
-	}	
+	instruct: function() {
+		this.resetPawns();
+		this.set('moved', true);
+	}
 })
