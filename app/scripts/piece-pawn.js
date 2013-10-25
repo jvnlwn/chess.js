@@ -11,8 +11,10 @@ Pieces['pawn'] = Piece.extend({
 			
 		// to be called everytime this.model's view is moved
 		this.instruct = function(options) {
+			this.checkInitialMove();
+			this.enPassant();
+
 			this.moved = options.moved || false
-			this.enPassant = options.enPassant || false;
 
 			if (this.moved) {
 				this.range = 1;
@@ -70,7 +72,11 @@ Pieces['pawn'] = Piece.extend({
 
 					if (!pieceIsThere) {
 						// console.log('no opponent present')
-						dependenciesPass = false;
+
+						// check for enPassant
+						if (this.get('targetSquare') !== pathDetails.newId) {
+							dependenciesPass = false;
+						}
 					}
 				} else {
 					pathDetails.canTarget = true;
@@ -92,5 +98,73 @@ Pieces['pawn'] = Piece.extend({
 		}
 
 		return direction;
+	},
+
+	enPassant: function() {
+		if (this.get('targetSquare')) {
+			if (this.get('position') === this.get('targetSquare')) {
+				var collection = this.get('opponent') === 'white' ? whitePieces : blackPieces;
+				var capturedPawn = collection.findWhere({'position': this.get('enemyPawn')})
+				collection.remove(capturedPawn);
+			}
+		}
+	},
+
+	checkInitialMove: function() {
+		var pawnPosition = this.get('position')
+
+		var file = pawnPosition.slice(0, 1);
+		var rank = pawnPosition.slice(1);
+
+		if (this.range === 2) {
+			var index = chess.setup.file.indexOf(file)
+			var firstSide = chess.setup.file[index - 1]
+			var secondSide = chess.setup.file[index + 1]
+			var targetSquare;
+
+			var collection = this.get('opponent') === 'white' ? whitePieces : blackPieces;
+
+			if (parseInt(rank) === 4) {
+				firstSide += rank;
+				secondSide += rank;
+				targetSquare = file + '3';
+			}
+
+			if (parseInt(rank) === 5) {
+				firstSide += rank;
+				secondSide += rank;
+				targetSquare = file + '6';
+			}
+
+			firstSide = collection.findWhere({
+				'piece':    'pawn',
+				'position': firstSide
+			})
+
+			secondSide = collection.findWhere({
+				'piece':    'pawn',
+				'position': secondSide
+			})
+
+			if (firstSide) {
+				firstSide.set({
+					// enPassant:    true,
+					targetSquare: targetSquare,
+					enemyPawn:    pawnPosition
+				})
+			}
+
+			if (secondSide) {
+				secondSide.set({
+					// enPassant:    true,
+					targetSquare: targetSquare,
+					enemyPawn:    pawnPosition
+				})
+			}
+		}
 	}
 })
+
+
+
+

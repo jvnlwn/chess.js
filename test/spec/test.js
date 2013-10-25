@@ -394,7 +394,7 @@
 			})
 
 			it('B at f8 rank move 10. ... Bh8 should be unsuccessful', function(done) {
-				moveTest('f8', 'h6', false, done)
+				moveTest('f8', 'f8', false, done)
 			})
 
 			it('B at f8 diagaonal 10. ... Bxh6 should be successful', function(done) {

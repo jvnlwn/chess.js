@@ -126,6 +126,7 @@ Piece = Backbone.Model.extend({
 		if (pathDetails.dependenciesPass) {
 
 			this.instruct({moved: true})
+			this.resetPawns();
 
 			view.options.cssPosition = pathDetails.newPercentages
 			view.$el.css(view.options.cssPosition)
@@ -149,6 +150,17 @@ Piece = Backbone.Model.extend({
 				}
 			}
 		}
+	},
+
+	resetPawns: function() {
+		var pawns = this.collection.where({'piece': 'pawn'})
+
+		pawns.forEach(function(pawn) {
+			pawn.unset('targetSquare')
+			pawn.unset('enemyPawn')
+			// pawn.set('enPassant', false);
+		})
+
 	}
 })
 
