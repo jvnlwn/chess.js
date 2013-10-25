@@ -1,4 +1,4 @@
-chess.utilities.isTargeted = function(collection, targetPiece, index) {
+chess.utilities.isTargeted = function(collection, targetSquare, kingPosition, index) {
 	var setup = chess.setup;
 	var i = index;
 
@@ -12,10 +12,10 @@ chess.utilities.isTargeted = function(collection, targetPiece, index) {
 
 	collection.each(function(piece) {
 
-		if (piece.get('position') !== targetPiece) {
+		if (piece.get('position') !== targetSquare) {
 			var pathDetails = {
 				id: piece.get('position'),
-				newId: targetPiece,
+				newId: targetSquare,
 				targeting: true,
 				canTarget: true
 			}
@@ -24,10 +24,15 @@ chess.utilities.isTargeted = function(collection, targetPiece, index) {
 			pathDetails = $.extend(pathDetails, piece.isPathKnown(pathDetails))
 			pathDetails = $.extend(pathDetails, piece.dependencies(pathDetails))
 
-			if (pathDetails.dependenciesPass && pathDetails.canTarget && setup.attackedSquares.indexOf(targetPiece) === -1) {
-				setup.attackedSquares.push(targetPiece)
+			if (pathDetails.dependenciesPass && pathDetails.canTarget && setup.attackedSquares.indexOf(targetSquare) === -1) {
+				setup.attackedSquares.push(targetSquare)
 
-				$('.' + targetPiece).css('background', 'rgba(177, 142, 238, .3)')
+				$('.' + targetSquare).css('background', 'rgba(177, 142, 238, .3)')
+
+				if (targetSquare === kingPosition) {
+					chess.setup.blockOrCapture.push(pathDetails.id)
+					chess.setup.blockOrCapture.push(pathDetails.innerSquares)
+				}
 			}
 
 		}

@@ -9,6 +9,8 @@ chess.setup = {
 
 	attackedSquares: [],
 
+	blockOrCapture: [],
+
 	darkSquare: 'rgb(148, 109, 41)',
 	lightSquare:'rgb(255, 213, 139)',
 
