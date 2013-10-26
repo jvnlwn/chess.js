@@ -4,7 +4,7 @@ Piece = Backbone.Model.extend({
 		pathDetails.dependenciesPass = pathDetails.path;
 
 		if (pathDetails.dependenciesPass && this.extraDependencies) {
-			pathDetails = $.extend(this.extraDependencies(pathDetails));
+			pathDetails = $.extend(pathDetails, this.extraDependencies(pathDetails));
 		}
 
 		if (pathDetails.dependenciesPass) {
@@ -13,6 +13,7 @@ Piece = Backbone.Model.extend({
 			if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
 				// player already occupies target square
 
+				console.log('targeting on? ', pathDetails.targeting)
 				if (!pathDetails.targeting) {
 					// check if targeting function is running
 					pathDetails.dependenciesPass = false;
@@ -61,8 +62,13 @@ Piece = Backbone.Model.extend({
 			fileDiff:         {},
 			rankDiff:         {},
 			id:               that.get('position'),
-			dependenciesPass: true
+			// castleSquares:    [],
+			castle:           {},
+			dependenciesPass: true,
+			player:           true
 		}
+
+		pathDetails.castle.castleSquares = []
 
 		setTimeout(function(){
 
@@ -123,10 +129,12 @@ Piece = Backbone.Model.extend({
 
 			this.instruct();
 
-			view.options.cssPosition = pathDetails.newPercentages;
-			view.$el.css(view.options.cssPosition);
-			view.$el.attr('id', pathDetails.newId);
+			// view.options.cssPosition = pathDetails.newPercentages;
+			// view.$el.css(view.options.cssPosition);
+			// view.$el.attr('id', pathDetails.newId);
 			
+			this.set('cssPosition', pathDetails.newPercentages)
+
 			if (pieceIsThere) {
 				if (pieceIsThere.get('player') === this.get('opponent')) {
 					pieceIsThere.collection.remove(pieceIsThere)
@@ -137,7 +145,9 @@ Piece = Backbone.Model.extend({
 		else {
 			this.set('position', pathDetails.id);
 
-			view.$el.css(view.options.cssPosition);
+			// view.$el.css(view.options.cssPosition);
+			view.$el.css(this.get('cssPosition'));
+			// this.set('cssPosition', this.get('cssPosition'));
 
 			if (pieceIsThere) {
 				if (pieceIsThere.get('position') === 'MIA') {

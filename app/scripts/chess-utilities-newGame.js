@@ -45,7 +45,8 @@ chess.utilities.newGame = function() {
 				image: pieceWithColor,
 				position: id,
 				player: player,
-				opponent: opponent
+				opponent: opponent,
+				cssPosition: cssPosition
 			})
 
 			var pieceView = {

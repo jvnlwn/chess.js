@@ -16,6 +16,12 @@ PieceView = Backbone.View.extend({
 			that.remove()
 		})
 
+		this.listenTo(this.model, 'change:cssPosition', function() {
+			this.$el.css(this.model.get('cssPosition'));
+			// this.options.cssPosition = this.model.get('cssPosition');
+			this.$el.attr('id', this.model.get('position'))
+		})
+
 		this.render();
 	},
 
@@ -66,6 +72,16 @@ PieceView = Backbone.View.extend({
 //     pointer.pageX + ', ' + pointer.pageY +
 //     ' position at ' + instance.position.x + ', ' + instance.position.y );
 // }
+
+
+
+
+
+
+
+
+
+
 
 
 

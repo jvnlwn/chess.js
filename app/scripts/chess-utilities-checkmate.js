@@ -24,8 +24,12 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 					rankDiff:         {},
 					id:               piecePosition,
 					newId:            square,
+					// castleSquares:    [],
+					castle:           {},
 					dependenciesPass: true
 				}
+
+				pathDetails.castle.castleSquares = []
 
 				pathDetails = piece.checkMove(pathDetails);
 
