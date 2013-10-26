@@ -17,19 +17,10 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 
 			squaresToCheck.forEach(function(square) {
 
-				var pathDetails = {
-					path:             false,
-					distance:         0,
-					fileDiff:         {},
-					rankDiff:         {},
-					id:               piecePosition,
-					newId:            square,
-					// castleSquares:    [],
-					castle:           {},
-					dependenciesPass: true
-				}
-
-				pathDetails.castle.castleSquares = []
+				var pathDetails = new chess.setup.PathDetails({
+					id:    piecePosition,
+					newId: square
+				})
 
 				pathDetails = piece.checkMove(pathDetails);
 

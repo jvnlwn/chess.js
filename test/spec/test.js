@@ -536,8 +536,8 @@
 
 		describe('pawn promote and queen carnage', function() {
 
-			it('p at d5, 18. d6 ... should be successful', function(done) {
-				moveTest('d5', 'd6', true, done)
+			it('p at d6, 18. d7 ... should be successful', function(done) {
+				moveTest('d6', 'd7', true, done)
 			})
 
 			it('Q at f6, 18. ... Qxc3 should be successful', function(done) {
@@ -546,21 +546,17 @@
 
 			// check that wn at c3 was captured
 
-			it('p at d6, 19. d7 ... should be successful', function(done) {
-				moveTest('d6', 'd7', true, done)
+			it('p at d7, 19. d8=? ... should be successful', function(done) {
+				moveTest('d7', 'd8', true, done)
 			})
+
+			// check that pawn was promoted
 
 			it('Q at c3, 19. ... Qxd3 should be successful', function(done) {
 				moveTest('c3', 'd3', true, done)
 			})
 
 			// check that wp at d3 was captured
-
-			it('p at d7, 20. d8=? ... should be successful', function(done) {
-				moveTest('d7', 'd8', true, done)
-			})
-
-			// check that pawn was promoted
 
 			it('Q at d3, 20. ... Qxh3 should be successful', function(done) {
 				moveTest('d3', 'h3', true, done)

@@ -11,6 +11,20 @@ chess.setup = {
 
 	blockOrCapture: [],
 
+	PathDetails: function(options) {
+		this.path =             false,
+		this.distance =         0,
+		this.fileDiff =         {},
+		this.rankDiff =         {},
+		this.id =               options.id,
+		this.newId =            options.newId || '',
+		this.castle =           {squares: []},
+		this.dependenciesPass = true,
+		this.player =           false || options.player,
+		this.targeting =        false || options.targeting,
+		this.canTarget =        false || options.canTarget
+	},
+
 	darkSquare: 'rgb(148, 109, 41)',
 	lightSquare:'rgb(255, 213, 139)',
 

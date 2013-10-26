@@ -13,12 +13,13 @@ chess.utilities.isTargeted = function(collection, targetSquare, kingPosition, in
 	collection.each(function(piece) {
 
 		if (piece.get('position') !== targetSquare) {
-			var pathDetails = {
-				id: piece.get('position'),
-				newId: targetSquare,
+
+			var pathDetails = new setup.PathDetails({
+				id:        piece.get('position'),
+				newId:     targetSquare,
 				targeting: true,
 				canTarget: true
-			}
+			})
 			
 			pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails));
 			pathDetails = $.extend(pathDetails, piece.isPathKnown(pathDetails))

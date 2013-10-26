@@ -22,16 +22,18 @@ chess.utilities.isKingInCheck = function(side, pathDetails) {
 		    chess.utilities.isTargeted(opponentCollection, square, kingPosition, index)
 		})
 
-		if (pathDetails.castle.castleSquares.length > 0) {
-			pathDetails.castle.castleSquares.forEach(function(square) {
+		// checking if king is attempting to castle, otherwise just check if king's square is targeted by opponent
+		if (pathDetails.castle.squares.length > 0) {
+			pathDetails.castle.squares.forEach(function(square) {
 				if (chess.setup.attackedSquares.indexOf(square) > -1) {
 					pathDetails.dependenciesPass = false;
 				}
 			})
 			if (pathDetails.dependenciesPass) {
-				pathDetails.castle.rookPiece.set('position', pathDetails.castle.rookPosition)
-				pathDetails.castle.rookPiece.set('cssPosition', pathDetails.castle.newCssPosition)
-				pathDetails.castle.rookPiece.instruct()
+				var rook = pathDetails.castle.rookPiece
+				rook.set('position', pathDetails.castle.newRookPosition)
+				rook.set('cssPosition', pathDetails.castle.newCssPosition)
+				rook.instruct()
 			}
 		} else if (chess.setup.attackedSquares.indexOf(kingPosition) > -1) {
 			// king is in check

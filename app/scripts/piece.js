@@ -13,7 +13,6 @@ Piece = Backbone.Model.extend({
 			if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
 				// player already occupies target square
 
-				console.log('targeting on? ', pathDetails.targeting)
 				if (!pathDetails.targeting) {
 					// check if targeting function is running
 					pathDetails.dependenciesPass = false;
@@ -56,19 +55,10 @@ Piece = Backbone.Model.extend({
 	validateMove: function(view) {
 		var that = this;
 
-		var pathDetails = {
-			path:             false,
-			distance:         0,
-			fileDiff:         {},
-			rankDiff:         {},
-			id:               that.get('position'),
-			// castleSquares:    [],
-			castle:           {},
-			dependenciesPass: true,
-			player:           true
-		}
-
-		pathDetails.castle.castleSquares = []
+		var pathDetails = new chess.setup.PathDetails({
+			id:     that.get('position'),
+			player: true,
+		}) 
 
 		setTimeout(function(){
 

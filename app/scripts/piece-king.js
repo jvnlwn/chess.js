@@ -35,10 +35,10 @@ Pieces['king'] = Piece.extend({
 					pathDetails.dependenciesPass = true;
 
 					pathDetails.castle = {
-						castleSquares: response.castleSquares,
-						rookPiece: response.rookPiece,
-						rookPosition: response.rookPosition,
-						newCssPosition: response.newCssPosition
+						squares:         response.castleSquares,
+						rookPiece:       response.rookPiece,
+						newRookPosition: response.newRookPosition,
+						newCssPosition:  response.newCssPosition
 					}
 
 					pathDetails.innerSquares = response.innerSquares;
@@ -91,7 +91,7 @@ Pieces['king'] = Piece.extend({
 			dependenciesPass: dependenciesPass,
 			castleSquares:    castleSquares,
 			rookPiece:        rook,
-			rookPosition:     newRookPosition,
+			newRookPosition:  newRookPosition,
 			newCssPosition:   newCssPosition,
 			innerSquares:     innerSquares
 		}
