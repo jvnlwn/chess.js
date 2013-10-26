@@ -117,7 +117,6 @@ Piece = Backbone.Model.extend({
 	finalizeMove: function(pathDetails, pieceIsThere, view) {
 		if (pathDetails.dependenciesPass) {
 
-			this.instruct();
 
 			// view.options.cssPosition = pathDetails.newPercentages;
 			// view.$el.css(view.options.cssPosition);
@@ -130,6 +129,8 @@ Piece = Backbone.Model.extend({
 					pieceIsThere.collection.remove(pieceIsThere)
 				}				
 			}
+			
+			this.instruct();
 		} 
 
 		else {

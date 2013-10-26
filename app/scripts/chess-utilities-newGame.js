@@ -60,9 +60,6 @@ chess.utilities.newGame = function() {
 				fileArray: setup.file
 			}
 
-			// possibly reference allPieces later
-			// allPieces.add(piece)
-
 			collections[player].add(piece)
 			pieceView.model = collections[player].last()
 

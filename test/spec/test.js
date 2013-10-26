@@ -94,7 +94,7 @@
 	}
 
 	// no way to foce a jquery mousemove to mimic dragging. This is best attempt:
-	function moveTest(pieceSquare, targetSquare, valid, done) {
+	function moveTest(pieceSquare, targetSquare, valid, done, pieceColor, capture, pawnSquare) {
 		if (valid) {
 			var targetId = targetSquare
 		} else {
@@ -118,10 +118,28 @@
 			var newPositionPercentages = findPosition(id)
 
 	    	expect(id).to.equal('#' + targetId);
-	    	// expect(newPositionPercentages.left).to.equal(expectedLeft[targetId.slice(0, 1)]);
-			// expect(newPositionPercentages.top).to.equal(expectedTop[targetId.slice(1)]);
+	    	expect(newPositionPercentages.left).to.equal(expectedLeft[targetId.slice(0, 1)]);
+			expect(newPositionPercentages.top).to.equal(expectedTop[targetId.slice(1)]);
+
+			if (capture === true) {
+				captureTest(pieceSquare, pieceColor, pawnSquare)
+			}
+
 			done();
 		}, 150)
+	}
+
+	var captureTest = function(pieceSquare, pieceColor, pawnSquare) {
+		var collection = pieceColor === 'white' ? whitePieces : blackPieces
+		var capturedCollection = pieceColor === 'white' ? whiteCapturedPieces : blackCapturedPieces
+
+		var piece = collection.findWhere({'position': pieceSquare})
+		
+		// || for the case of en Passant where piece that is captured does not have position MIA
+		var capturedPiece = capturedCollection.findWhere({'position': 'MIA'}) || capturedCollection.findWhere({'position': pawnSquare})
+
+		expect(piece).to.equal(undefined)
+		expect(capturedPiece).to.not.equal(undefined)
 	}
 
 	// stubbing out positions that resemble a piece's position on player's mouseup. For easy use in testing.
@@ -267,11 +285,8 @@
 			})
 
 			it('diagonal capture 4. exd5 ... should be successful', function(done) {
-				moveTest('e4', 'd5', true, done)
+				moveTest('e4', 'd5', true, done, 'black', true)
 			})
-
-			// check for bp on d5 to be captured
-
 		})
 
 		describe('pawn at e5', function() {
@@ -296,7 +311,7 @@
 			})
 
 			it('pawn at e4 perform en passant 5. ... exf3 should be successful', function(done) {
-				moveTest('e4', 'f3', true, done)
+				moveTest('e4', 'f3', true, done, 'white', true, 'f4')
 			})
 
 			// check for wp on f4 to be captured
@@ -362,10 +377,8 @@
 			})
 
 			it('N at g1 move diagonal 7. Nxh3 ... should be successful', function(done) {
-				moveTest('g1', 'h3', true, done)
+				moveTest('g1', 'h3', true, done, 'black', true)
 			})
-
-			// check for bb at h3 to be captured 
 		})
 
 		describe('failed en passant', function() {
@@ -398,10 +411,8 @@
 			})
 
 			it('B at f8 diagaonal 10. ... Bxh6 should be successful', function(done) {
-				moveTest('f8', 'h6', true, done)
+				moveTest('f8', 'h6', true, done, 'white', true)
 			})
-
-			// check for wb at h6 to be captured 
 		})
 
 		describe('pawn at d5', function() {
@@ -541,28 +552,21 @@
 			})
 
 			it('Q at f6, 18. ... Qxc3 should be successful', function(done) {
-				moveTest('f6', 'c3', true, done)
+				moveTest('f6', 'c3', true, done, 'white', true)
 			})
-
-			// check that wn at c3 was captured
 
 			it('p at d7, 19. d8=? ... should be successful', function(done) {
 				moveTest('d7', 'd8', true, done)
 			})
-
 			// check that pawn was promoted
 
 			it('Q at c3, 19. ... Qxd3 should be successful', function(done) {
-				moveTest('c3', 'd3', true, done)
+				moveTest('c3', 'd3', true, done, 'white', true)
 			})
-
-			// check that wp at d3 was captured
 
 			it('Q at d3, 20. ... Qxh3 should be successful', function(done) {
-				moveTest('d3', 'h3', true, done)
+				moveTest('d3', 'h3', true, done, 'white', true)
 			})
-
-			// check that wn at h3 was captured
 		})
 
 		describe('check bishop rank and file move', function() {
@@ -587,32 +591,24 @@
 			})
 
 			it('R at f8, 21. ... Rxd8 should be successful', function(done) {
-				moveTest('f8', 'd8', true, done)
+				moveTest('f8', 'd8', true, done, 'white', true)
 			})
-
-			// check that w? at d8 was captured
 
 			it('R at f1, 22. Rxf7 ... should be successful', function(done) {
-				moveTest('f1', 'f7', true, done)
+				moveTest('f1', 'f7', true, done, 'black', true)
 			})
-
-			// check that bp at f7 was captured
 
 			it('R at d8, 22. ... Rf6 should be unsuccessful', function(done) {
 				moveTest('d8', 'f6', false, done)
 			})
 
 			it('R at d8, 22. ... Rxd2 should be successful', function(done) {
-				moveTest('d8', 'd2', true, done)
+				moveTest('d8', 'd2', true, done, 'white', true)
 			})
-
-			// check that wq at d2 was captured
 
 			it('R at f7, 23. Rxb7+ ... should be successful', function(done) {
-				moveTest('f7', 'b7', true, done)
+				moveTest('f7', 'b7', true, done, 'black', true)
 			})
-
-			// check that bp at b7 was captured
 
 			it('R at d2, 23. ... Rxg2 should be unsuccessful', function(done) {
 				moveTest('d2', 'g2', false, done)
@@ -627,26 +623,20 @@
 			})
 
 			it('R at b7, 24. Rxa7 ... should be successful', function(done) {
-				moveTest('b7', 'a7', true, done)
+				moveTest('b7', 'a7', true, done, 'black', true)
 			})
-
-			// check that bp at a2 was captured
 
 			it('R at d2, 24. ... Rxh2 should be unsuccessful', function(done) {
 				moveTest('d2', 'h2', false, done)
 			})
 
 			it('R at d2, 24. ... Rxg2 should be successful', function(done) {
-				moveTest('d2', 'g2', true, done)
+				moveTest('d2', 'g2', true, done, 'white', true)
 			})
-
-			// check that wp at g2 was captured
 
 			it('R at a7, 25. Rxa8 ... should be successful', function(done) {
-				moveTest('a7', 'a8', true, done)
+				moveTest('a7', 'a8', true, done, 'black', true)
 			})
-
-			// check that br at a8 was captured
 
 			it('Q at h3, 25. ... Qe3+ should be successful', function(done) {
 				moveTest('h3', 'e3', true, done)
