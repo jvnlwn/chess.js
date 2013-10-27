@@ -15,10 +15,10 @@ chess.utilities.isTargeted = function(collection, targetSquare, kingPosition, in
 		if (piece.get('position') !== targetSquare) {
 
 			var pathDetails = new setup.PathDetails({
-				id:        piece.get('position'),
-				newId:     targetSquare,
-				targeting: true,
-				canTarget: true
+				position:    piece.get('position'),
+				newPosition: targetSquare,
+				targeting:   true,
+				canTarget:   true
 			})
 			
 			pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails));
@@ -31,7 +31,7 @@ chess.utilities.isTargeted = function(collection, targetSquare, kingPosition, in
 				$('.' + targetSquare).css('background', 'rgba(177, 142, 238, .3)')
 
 				if (targetSquare === kingPosition) {
-					chess.setup.blockOrCapture.push(pathDetails.id)
+					chess.setup.blockOrCapture.push(pathDetails.position)
 					chess.setup.blockOrCapture.push(pathDetails.innerSquares)
 				}
 			}

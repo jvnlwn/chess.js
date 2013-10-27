@@ -53,8 +53,8 @@ Pieces['king'] = Piece.extend({
 	},
 
 	castle: function(pathDetails) {
-		var file = pathDetails.newId.slice(0, 1)
-		var rank = pathDetails.newId.slice(1)
+		var file = pathDetails.newPosition.slice(0, 1)
+		var rank = pathDetails.newPosition.slice(1)
 
 		var dependenciesPass = false;
 

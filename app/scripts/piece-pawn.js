@@ -56,7 +56,7 @@ Pieces['pawn'] = Piece.extend({
 				pathDetails.dependenciesPass = false;
 			}
 				
-			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
+			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
 
 			// check occupatoin for file path
 			if (pieceIsThere && dependencies.occupied === false) {
@@ -74,7 +74,7 @@ Pieces['pawn'] = Piece.extend({
 						// no piece present
 
 						// check for en passant
-						if (this.get('targetSquare') !== pathDetails.newId) {
+						if (this.get('targetSquare') !== pathDetails.newPosition) {
 							pathDetails.dependenciesPass = false;
 						}
 					}
@@ -161,7 +161,7 @@ Pieces['pawn'] = Piece.extend({
 	},
 
 	promotion: function(pathDetails) {
-		var rank = pathDetails.newId.slice(1);
+		var rank = pathDetails.newPosition.slice(1);
 
 		if (rank === '1' || rank === '8') {
 			pathDetails.promotion = {

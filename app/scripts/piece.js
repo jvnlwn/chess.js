@@ -8,7 +8,7 @@ Piece = Backbone.Model.extend({
 		}
 
 		if (pathDetails.dependenciesPass) {
-			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
+			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
 
 			if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
 				// player already occupies target square
@@ -56,15 +56,15 @@ Piece = Backbone.Model.extend({
 		var that = this;
 
 		var pathDetails = new chess.setup.PathDetails({
-			id:     that.get('position'),
-			player: true,
+			position: that.get('position'),
+			player:   true,
 		}) 
 
 		setTimeout(function(){
 
 			pathDetails = that.checkMove(that.targetSquare(pathDetails))
 
-			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
+			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
 
 			pathDetails.dependenciesPass = that.checkKing(that.get('player'), pathDetails, pieceIsThere)
 
@@ -84,7 +84,7 @@ Piece = Backbone.Model.extend({
 
 		pathDetails.newPercentages = chess.utilities.findClosest(pathDetails);
 
-		pathDetails.newId = chess.utilities.reassignId(pathDetails);
+		pathDetails.newPosition = chess.utilities.reassignId(pathDetails);
 
 		return pathDetails;
 	},
@@ -108,7 +108,7 @@ Piece = Backbone.Model.extend({
 			}
 		}
 
-		this.set('position', pathDetails.newId)
+		this.set('position', pathDetails.newPosition)
 
 		return chess.utilities.isKingInCheck(side, pathDetails);
 
@@ -120,7 +120,7 @@ Piece = Backbone.Model.extend({
 
 			// view.options.cssPosition = pathDetails.newPercentages;
 			// view.$el.css(view.options.cssPosition);
-			// view.$el.attr('id', pathDetails.newId);
+			// view.$el.attr('id', pathDetails.newPosition);
 			
 			this.set('cssPosition', pathDetails.newPercentages)
 
@@ -129,12 +129,12 @@ Piece = Backbone.Model.extend({
 					pieceIsThere.collection.remove(pieceIsThere)
 				}				
 			}
-			
+
 			this.instruct();
 		} 
 
 		else {
-			this.set('position', pathDetails.id);
+			this.set('position', pathDetails.position);
 
 			// view.$el.css(view.options.cssPosition);
 			view.$el.css(this.get('cssPosition'));
@@ -142,7 +142,7 @@ Piece = Backbone.Model.extend({
 
 			if (pieceIsThere) {
 				if (pieceIsThere.get('position') === 'MIA') {
-					pieceIsThere.set('position', pathDetails.newId);
+					pieceIsThere.set('position', pathDetails.newPosition);
 				}
 			}
 		}

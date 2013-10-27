@@ -18,13 +18,13 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 			squaresToCheck.forEach(function(square) {
 
 				var pathDetails = new chess.setup.PathDetails({
-					id:    piecePosition,
-					newId: square
+					position:    piecePosition,
+					newPosition: square
 				})
 
 				pathDetails = piece.checkMove(pathDetails);
 
-				var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
+				var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
 
 				if (pieceIsThere) {
 					if (pieceIsThere.get('player') !== player) {
@@ -32,7 +32,7 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 					}
 				}
 
-				piece.set('position', pathDetails.newId)
+				piece.set('position', pathDetails.newPosition)
 
 				if (pathDetails.dependenciesPass) {
 					
@@ -40,14 +40,14 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 
 						if (chess.setup.attackedSquares.indexOf(kingPosition) < 0) {
 							// piece can either block or capture
-							counterSquares.push(pathDetails.newId)
+							counterSquares.push(pathDetails.newPosition)
 						}
 					}
 				}
 
 				if (pieceIsThere) {
 					if (pieceIsThere.get('position') === 'MIA') {
-						pieceIsThere.set('position', pathDetails.newId);
+						pieceIsThere.set('position', pathDetails.newPosition);
 					}
 				}
 
