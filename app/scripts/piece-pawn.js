@@ -35,7 +35,7 @@ Pieces['pawn'] = Piece.extend({
 				'occupied': this.get('opponent'),
 				'range':    1
 			}
-		})		
+		})
 	},
 
 	extraDependencies: function(pathDetails) {
@@ -49,21 +49,19 @@ Pieces['pawn'] = Piece.extend({
 			// check range
 			if (pathDetails.distance > dependencies.range) {
 				pathDetails.dependenciesPass = false;
-				// console.log('bad range')
 			}
 
 			// check direction
 			if (this.checkDirection(pathDetails) !== 'forward') {
 				pathDetails.dependenciesPass = false;
-				// console.log('bad direction')
 			}
 				
 			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newId}) || whitePieces.findWhere({position: pathDetails.newId});
 
 			// check occupatoin for file path
 			if (pieceIsThere && dependencies.occupied === false) {
-				// console.log('piece present')
-				pathDetails.dependenciesPass= false;
+				// piece is there
+				pathDetails.dependenciesPass = false;
 			} else {
 				pathDetails.canTarget = false;
 			}
@@ -73,9 +71,9 @@ Pieces['pawn'] = Piece.extend({
 				if (!pathDetails.targeting) {
 
 					if (!pieceIsThere) {
-						// console.log('no opponent present')
+						// no piece present
 
-						// check for enPassant
+						// check for en passant
 						if (this.get('targetSquare') !== pathDetails.newId) {
 							pathDetails.dependenciesPass = false;
 						}
@@ -84,9 +82,11 @@ Pieces['pawn'] = Piece.extend({
 					pathDetails.canTarget = true;
 				}		
 			}
-		}
 
-		// pathDetails.dependenciesPass = dependenciesPass
+			if (pathDetails.dependenciesPass) {
+				pathDetails = $.extend(this.promotion(pathDetails));
+			}
+		}
 
 		return pathDetails;
 	},
@@ -158,6 +158,19 @@ Pieces['pawn'] = Piece.extend({
 				})
 			}
 		}
+	},
+
+	promotion: function(pathDetails) {
+		var rank = pathDetails.newId.slice(1);
+
+		if (rank === '1' || rank === '8') {
+			pathDetails.promotion = {
+				promote: true,
+				pawn:    this
+			}
+		}
+
+		return pathDetails;
 	}
 })
 

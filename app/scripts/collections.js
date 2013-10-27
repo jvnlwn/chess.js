@@ -1,30 +1,31 @@
-WhitePieces = Backbone.Collection.extend({
+PiecesSet = Backbone.Collection.extend({
 	model: Piece,
 
-	initialize: function() {
+	initialize: function(models, options) {
+		this.capturedPieces = new CapturedPieces()
+
+		this.on('add', function(model) {
+			new PieceView({model: model})
+		})
+
 		this.on('remove', function(piece) {
-			console.log('what is up white')
-			whiteCapturedPieces.add(piece)
-		})	
+			var add = true;
+
+			// for pawn promotion
+			if (piece.get('piece') === 'pawn') {
+				var rank = piece.get('position').slice(1)
+				if (rank === '1' && rank === '8') {
+					add = false
+				}
+			}
+
+			if (add) {
+				this.capturedPieces.add(piece)
+			}
+		})
 	}
 })
 
-BlackPieces = Backbone.Collection.extend({
-	model: Piece,
-
-	initialize: function() {
-		this.on('remove', function(piece) {
-			console.log('what is up black')
-			console.log(piece)
-			blackCapturedPieces.add(piece)
-		})	
-	}
-})
-
-WhiteCapturedPieces = Backbone.Collection.extend({
-	model: Piece,
-})
-
-BlackCapturedPieces = Backbone.Collection.extend({
+CapturedPieces = Backbone.Collection.extend({
 	model: Piece
 })

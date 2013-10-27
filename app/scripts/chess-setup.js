@@ -22,7 +22,8 @@ chess.setup = {
 		this.dependenciesPass = true,
 		this.player =           false || options.player,
 		this.targeting =        false || options.targeting,
-		this.canTarget =        false || options.canTarget
+		this.canTarget =        false || options.canTarget,
+		this.promotion =        {promote: false}
 	},
 
 	darkSquare: 'rgb(148, 109, 41)',

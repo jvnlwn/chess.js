@@ -6,9 +6,9 @@ chess.utilities.newGame = function() {
 	for (i = 0; i < 64; i++) {
 		var rankValue = setup.rank[Math.floor(i / 8)];
 		var fileValue = setup.file[i % 8];
-		var id = fileValue + rankValue;
+		var position = fileValue + rankValue;
 
-		setup.squares.push(id);
+		setup.squares.push(position);
 
 		var cssPosition = {
 			top: setup.percentages.top[rankValue],
@@ -22,7 +22,7 @@ chess.utilities.newGame = function() {
 			background: setup.colorCycles[rankValue % 2 + 1][i % 2]
 		}, cssPosition) 
 
-		var square = '<div class="board-square ' + id + '"></div>';
+		var square = '<div class="board-square ' + position + '"></div>';
 		$('.chess-board').prepend($(square).css(cssSquare))
 
 		// just for the board. For testing overlay colors when squares are targeted.
@@ -34,7 +34,7 @@ chess.utilities.newGame = function() {
 			'black': blackPieces
 		}
 
-		var pieceWithColor = setup.piecePosition[id] || setup.piecePosition[rankValue];
+		var pieceWithColor = setup.piecePosition[position] || setup.piecePosition[rankValue];
 
 		if (pieceWithColor) {
 			var pieceToken = pieceWithColor.slice(1);
@@ -42,28 +42,14 @@ chess.utilities.newGame = function() {
 			var opponent = setup.opponentColor[pieceWithColor.slice(0,1)];
 
 			var piece = new Pieces[setup.pieceType[pieceToken]]({
-				image: pieceWithColor,
-				position: id,
-				player: player,
-				opponent: opponent,
+				image:       pieceWithColor,
+				position:    position,
+				player:      player,
+				opponent:    opponent,
 				cssPosition: cssPosition
 			})
 
-			var pieceView = {
-				rank: rankValue,
-				file: fileValue,
-				cssPosition: cssPosition,
-				id: id,
-				left: setup.percentages.left,
-				top: setup.percentages.top,
-				rankArray: setup.rank,
-				fileArray: setup.file
-			}
-
 			collections[player].add(piece)
-			pieceView.model = collections[player].last()
-
-			new PieceView(pieceView)
 		}
 	}
 }

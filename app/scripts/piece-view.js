@@ -22,16 +22,20 @@ PieceView = Backbone.View.extend({
 			this.$el.attr('id', this.model.get('position'))
 		})
 
+		this.listenTo(this.model, 'change:image', function() {
+			this.displayPiece();
+		})
+
 		this.render();
 	},
 
 	position: function() {
-		this.$el.css(this.options.cssPosition);
+		this.$el.css(this.model.get('cssPosition'));
 	},
 
 	setId: function() {
-		this.$el.attr('id', this.options.id)
-		return this.options.id;
+		this.$el.attr('id', this.model.get('position'))
+		return this.model.get('position');
 	},
 
 	render: function() {
@@ -57,8 +61,8 @@ PieceView = Backbone.View.extend({
 
 	displayPiece: function() {
 		this.$el.css({
-			// background: 'url("../images/' + this.model.get('image') + '.png") no-repeat center center',
-			background: 'url("../app/images/' + this.model.get('image') + '.png") no-repeat center center',
+			background: 'url("../images/' + this.model.get('image') + '.png") no-repeat center center',
+			// background: 'url("../app/images/' + this.model.get('image') + '.png") no-repeat center center',
 			'background-size': 'cover',
 			width: '8%',
 			height: '8%',
