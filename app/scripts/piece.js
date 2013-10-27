@@ -70,12 +70,17 @@ Piece = Backbone.Model.extend({
 
 			that.finalizeMove(pathDetails, pieceIsThere, view)
 
-			if (pathDetails.dependenciesPass) {
+			if (pathDetails.dependenciesPass && !pathDetails.promotion.promote) {
 				chess.utilities.checkmate(that.get('opponent'), pathDetails)				
 			}
 
-			return pathDetails;
-
+			// checking for pawn promotion
+			if (pathDetails.promotion.promote) {
+				pathDetails.promotion.promote = false;
+			
+				var pawn = {pawn: pathDetails.promotion.pawn}
+				new PromotionView($.extend(pathDetails, pawn))
+			}
 		},50)
 
 	},
@@ -126,7 +131,8 @@ Piece = Backbone.Model.extend({
 
 			if (pieceIsThere) {
 				if (pieceIsThere.get('player') === this.get('opponent')) {
-					pieceIsThere.collection.remove(pieceIsThere)
+					// pieceIsThere.collection.remove(pieceIsThere)
+					pieceIsThere.destroy()
 				}				
 			}
 

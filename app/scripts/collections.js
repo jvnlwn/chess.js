@@ -14,7 +14,8 @@ PiecesSet = Backbone.Collection.extend({
 			// for pawn promotion
 			if (piece.get('piece') === 'pawn') {
 				var rank = piece.get('position').slice(1)
-				if (rank === '1' && rank === '8') {
+
+				if (rank === '1' || rank === '8') {
 					add = false
 				}
 			}

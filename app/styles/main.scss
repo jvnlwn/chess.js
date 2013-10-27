@@ -24,6 +24,55 @@ body {
     background: red;
 }
 
+.promotion-view {
+    width: 50%;
+    height: 20%;
+    position: absolute;
+    top: 35%;
+    left: 40%;
+    background: rgb(142, 187, 213);
+    z-index: 200;
+}
+
+.promote {
+    width: 20%;
+    height: 50%;
+    margin: 8.2%;
+    position: absolute;
+    display: inline-block;
+    background-size: cover;
+}
+
+// .queen {
+//     background: url("../images/wq.png") no-repeat center center;
+//     background-size: cover;
+// }
+
+// .rook {
+//     left: 20%;
+//     background: url("../images/wr.png") no-repeat center center;
+//     background-size: cover;
+// }
+
+// .knight {
+//     left: 42%;
+//     background: url("../images/wn.png") no-repeat center center;
+//     background-size: cover;
+// }
+
+// .bishop {
+//     left: 65%;
+//     background: url("../images/wb.png") no-repeat center center;
+//     background-size: cover;
+// }
+
+// .promote {
+//     background-size: cover;
+//     width: 80%;
+//     height: 80%;
+//     margin: 2.2%;
+// }
+
 // #what {
 //     width: 100px;
 //     height: 100px;

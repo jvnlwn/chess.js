@@ -39,11 +39,6 @@ chess.utilities.isKingInCheck = function(side, pathDetails) {
 			// king is in check
 			pathDetails.dependenciesPass = false;
 			// console.log(side + ' king in check')
-		} else if (pathDetails.promotion.promote) {
-			pathDetails.promotion.promote = false;
-			
-			var model = {model: pathDetails.promotion.pawn}
-			new PromotionView($.extend(pathDetails, model))
 		}
 	}
 

@@ -12,18 +12,14 @@ PieceView = Backbone.View.extend({
 
 		$('.chess-board').append(this.$el);
 		var that = this;
-		this.model.on('remove', function() {
+
+		this.listenTo(this.model, 'destroy', function() {
 			that.remove()
 		})
 
 		this.listenTo(this.model, 'change:cssPosition', function() {
 			this.$el.css(this.model.get('cssPosition'));
-			// this.options.cssPosition = this.model.get('cssPosition');
 			this.$el.attr('id', this.model.get('position'))
-		})
-
-		this.listenTo(this.model, 'change:image', function() {
-			this.displayPiece();
 		})
 
 		this.render();
@@ -52,7 +48,8 @@ PieceView = Backbone.View.extend({
 		this.$el.css('z-index', '1')
 		var that = this;
 
-		var pathDetails = this.model.validateMove(this)
+		// var pathDetails = this.model.validateMove(this)
+		this.model.validateMove(this)
 	},
 
 	bringToFront: function() {
