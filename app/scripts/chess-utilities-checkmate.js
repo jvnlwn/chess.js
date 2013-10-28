@@ -4,61 +4,63 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 
 	var counterSquares = [];
 	var pieceCanSave = false;
+
+	var king = collection.findWhere({'piece': 'king'})
+	var kingPosition = king.get('position');
 	var player = collection.at(0).get('player');
 	
 	if (!chess.utilities.isKingInCheck(player, pathDetails)) {
 
-		var kingPosition = collection.findWhere({'piece': 'king'}).get('position');
-		var squaresToCheck = _.union(_.flatten(chess.setup.blockOrCapture))
+		var kingCanMove = false
 
-		collection.each(function(piece) {
+		function checkKing(pathDetails) {
+			// an acceptable move barring king not in check
+			if (chess.setup.attackedSquares.indexOf(pathDetails.newPosition) < 0) {
+		        // found a safe square
+		        kingCanMove = true;
+		    }
+		}
 
-			var piecePosition = piece.get('position')
+		chess.utilities.squareSearch(chess.utilities.kingMoves(collection), player, king, kingPosition, checkKing)
 
-			squaresToCheck.forEach(function(square) {
+		if (!kingCanMove) {
 
-				var pathDetails = new chess.setup.PathDetails({
-					position:    piecePosition,
-					newPosition: square
-				})
+			var checkmate = true;
 
-				pathDetails = piece.checkMove(pathDetails);
+			var squaresToCheck = _.union(_.flatten(chess.setup.blockOrCapture));
 
-				var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
+			collection.each(function(piece) {
 
-				if (pieceIsThere) {
-					if (pieceIsThere.get('player') !== player) {
-						pieceIsThere.set('position', 'MIA');	
-					}
-				}
+				var piecePosition = piece.get('position')
 
-				piece.set('position', pathDetails.newPosition)
-
-				if (pathDetails.dependenciesPass) {
-					
-					if (chess.utilities.isKingInCheck(player, pathDetails)) {
-
-						if (chess.setup.attackedSquares.indexOf(kingPosition) < 0) {
-							// piece can either block or capture
-							counterSquares.push(pathDetails.newPosition)
-						}
-					}
-				}
-
-				if (pieceIsThere) {
-					if (pieceIsThere.get('position') === 'MIA') {
-						pieceIsThere.set('position', pathDetails.newPosition);
-					}
-				}
-
-				piece.set('position', piecePosition);
-
+				chess.utilities.squareSearch(squaresToCheck, player, piece, piecePosition, checkPieces)
 			})
-		})
 
-		counterSquares.forEach(function(square) {
-			$('.' + square).css('background', 'rgba(30, 80, 140, .8)')
-		})
+			function checkPieces(pathDetails) {
+				if (chess.utilities.isKingInCheck(player, pathDetails)) {
+
+					if (chess.setup.attackedSquares.indexOf(kingPosition) < 0) {
+						// piece can either block or capture
+						checkmate = false;
+						counterSquares.push(pathDetails.newPosition)
+					}
+				}
+			}
+
+		}
+
+		if (counterSquares.length > 0) {
+			counterSquares.forEach(function(square) {
+				$('.' + square).css('background', 'rgba(30, 80, 140, .8)')
+			})
+		}
+
+		if (checkmate) {
+			pathDetails.notation.checkmate = true;		
+		} else {
+			pathDetails.notation.check = true;		
+		}
+		
 	}
-
+	chess.utilities.toPNG(pathDetails);
 }

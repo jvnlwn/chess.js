@@ -14,7 +14,7 @@ Pieces['king'] = Piece.extend({
 		this.set('moved', false);
 	},
 
-	instruct: function(options) {
+	instruct: function() {
 		this.resetPawns();
 		this.set('moved', true);
 	},
@@ -28,21 +28,10 @@ Pieces['king'] = Piece.extend({
 
 			if (pathDetails.distance > this.get('range')) {
 
-				var response = this.castle(pathDetails);
+				pathDetails = $.extend(pathDetails, this.castle(pathDetails));
 
-				if (response.dependenciesPass && pathDetails.player && !this.get('moved')) {
-					console.log('you have not moved yet')
+				if (pathDetails.dependenciesPass && pathDetails.player && !this.get('moved')) {
 					pathDetails.dependenciesPass = true;
-
-					pathDetails.castle = {
-						squares:         response.castleSquares,
-						rookPiece:       response.rookPiece,
-						newRookPosition: response.newRookPosition,
-						newCssPosition:  response.newCssPosition
-					}
-
-					pathDetails.innerSquares = response.innerSquares;
-
 				} else {
 					pathDetails.dependenciesPass = false;
 				}
@@ -67,6 +56,7 @@ Pieces['king'] = Piece.extend({
 				left: chess.setup.percentages.left['f'],
 				top: chess.setup.percentages.top[rank]
 			}
+			var side = 'king';
 
 		} else {
 			var targetRook = 'a' + rank;
@@ -77,9 +67,10 @@ Pieces['king'] = Piece.extend({
 				left: chess.setup.percentages.left['d'],
 				top: chess.setup.percentages.top[rank]
 			}
+			var side = 'queen';
 		}
 
-		var rook = this.collection.findWhere({position: targetRook})
+		var rook = this.collection.findWhere({position: targetRook});
 
 		if (rook) {
 			if (!rook.get('moved') && !this.get('moved')) {
@@ -87,13 +78,18 @@ Pieces['king'] = Piece.extend({
 			}
 		}
 
-		return {
+		pathDetails.castle = {
 			dependenciesPass: dependenciesPass,
-			castleSquares:    castleSquares,
+			squares:          castleSquares,
 			rookPiece:        rook,
 			newRookPosition:  newRookPosition,
 			newCssPosition:   newCssPosition,
-			innerSquares:     innerSquares
 		}
+
+		pathDetails.innerSquares = innerSquares;
+
+		pathDetails.notation.side = side;
+
+		return pathDetails;
 	}
 })

@@ -48,7 +48,6 @@ PieceView = Backbone.View.extend({
 		this.$el.css('z-index', '1')
 		var that = this;
 
-		// var pathDetails = this.model.validateMove(this)
 		this.model.validateMove(this)
 	},
 

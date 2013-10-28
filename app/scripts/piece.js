@@ -68,7 +68,7 @@ Piece = Backbone.Model.extend({
 
 			pathDetails.dependenciesPass = that.checkKing(that.get('player'), pathDetails, pieceIsThere)
 
-			that.finalizeMove(pathDetails, pieceIsThere, view)
+			pathDetails = $.extend(pathDetails, that.finalizeMove(pathDetails, pieceIsThere, view));
 
 			if (pathDetails.dependenciesPass && !pathDetails.promotion.promote) {
 				chess.utilities.checkmate(that.get('opponent'), pathDetails)				
@@ -122,6 +122,8 @@ Piece = Backbone.Model.extend({
 	finalizeMove: function(pathDetails, pieceIsThere, view) {
 		if (pathDetails.dependenciesPass) {
 
+			pathDetails.notation.piece = this;
+
 
 			// view.options.cssPosition = pathDetails.newPercentages;
 			// view.$el.css(view.options.cssPosition);
@@ -133,10 +135,11 @@ Piece = Backbone.Model.extend({
 				if (pieceIsThere.get('player') === this.get('opponent')) {
 					// pieceIsThere.collection.remove(pieceIsThere)
 					pieceIsThere.destroy()
+					pathDetails.notation.capture = true;
 				}				
 			}
 
-			this.instruct();
+			pathDetails = $.extend(pathDetails, this.instruct(pathDetails))
 		} 
 
 		else {

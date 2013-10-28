@@ -23,8 +23,11 @@ chess.setup = {
 		this.player =           false || options.player,
 		this.targeting =        false || options.targeting,
 		this.canTarget =        false || options.canTarget,
-		this.promotion =        {promote: false}
+		this.promotion =        {promote: false},
+		this.notation =         {}
 	},
+
+	png: [],
 
 	darkSquare: 'rgb(148, 109, 41)',
 	lightSquare:'rgb(255, 213, 139)',

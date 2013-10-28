@@ -1,4 +1,5 @@
 PromotionView = Backbone.View.extend({
+
 	className: 'promotion-view',
 
 	initialize: function(options) {
@@ -15,19 +16,17 @@ PromotionView = Backbone.View.extend({
 	},
 
 	render: function(options) {
-		new QueenView($.extend(options,  {image: 'q'}))
-		new RookView($.extend(options,   {image: 'r'}))
-		new KnightView($.extend(options, {image: 'n'}))
-		new BishopView($.extend(options, {image: 'b'}))
+		new QueenView(options)
+		new RookView(options)
+		new KnightView(options)
+		new BishopView(options)
 	}
 })
-
-
 
 PromotionPiecesView = Backbone.View.extend({
 
 	className: 'promote',
-	
+
 	initialize: function(options) {
 		this.options = options
 
@@ -37,25 +36,23 @@ PromotionPiecesView = Backbone.View.extend({
 	},
 
 	promote: function() {
-		console.log('hey your promoting')
-
 		var pawn = this.options.pawn;
 
-		var oldAttributes = this.getAttributes(pawn, this.options.image);
+		var oldAttributes = this.getAttributes(pawn);
 
-		var collection = pawn.collection
+		var collection = pawn.collection;
 
 		pawn.destroy();
 
-		var newPiece = this.chosen(oldAttributes)
-		collection.add(newPiece)
+		var pieceToken = collection.add(this.chosen(oldAttributes)).get('notation').toUpperCase();
 
-		chess.utilities.checkmate(newPiece.get('opponent'), this.options)
+		this.options.notation.promote = true;
+		this.options.notation.promote = pieceToken;
 
-
+		chess.utilities.checkmate(oldAttributes.opponent, this.options);
 	},
 
-	getAttributes: function(pawn, image) {
+	getAttributes: function(pawn) {
 		return {
 			position:    pawn.get('position'),
 			player:      pawn.get('player'),

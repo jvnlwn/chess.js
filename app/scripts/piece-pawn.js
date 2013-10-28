@@ -21,9 +21,9 @@ Pieces['pawn'] = Piece.extend({
 		})
 	},
 
-	instruct: function(options) {
+	instruct: function(pathDetails) {
 		this.checkInitialMove();
-		this.enPassant();
+		pathDetails = $.extend(pathDetails, this.enPassant(pathDetails));
 		this.resetPawns();
 
 		this.set('dependencies', {
@@ -36,6 +36,7 @@ Pieces['pawn'] = Piece.extend({
 				'range':    1
 			}
 		})
+		return pathDetails;
 	},
 
 	extraDependencies: function(pathDetails) {
@@ -102,14 +103,16 @@ Pieces['pawn'] = Piece.extend({
 		return direction;
 	},
 
-	enPassant: function() {
+	enPassant: function(pathDetails) {
 		if (this.get('targetSquare')) {
 			if (this.get('position') === this.get('targetSquare')) {
 				var collection = this.get('opponent') === 'white' ? whitePieces : blackPieces;
 				var capturedPawn = collection.findWhere({'position': this.get('enemyPawn')})
-				collection.remove(capturedPawn);
+				capturedPawn.destroy();
+				pathDetails.notation.capture = true;
 			}
 		}
+		return pathDetails;
 	},
 
 	checkInitialMove: function() {

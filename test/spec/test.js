@@ -131,12 +131,11 @@
 
 	var captureTest = function(pieceSquare, pieceColor, pawnSquare) {
 		var collection = pieceColor === 'white' ? whitePieces : blackPieces
-		var capturedCollection = pieceColor === 'white' ? whiteCapturedPieces : blackCapturedPieces
 
 		var piece = collection.findWhere({'position': pieceSquare})
 		
 		// || for the case of en Passant where piece that is captured does not have position MIA
-		var capturedPiece = capturedCollection.findWhere({'position': 'MIA'}) || capturedCollection.findWhere({'position': pawnSquare})
+		var capturedPiece = collection.capturedPieces.findWhere({'position': 'MIA'}) || collection.capturedPieces.findWhere({'position': pawnSquare})
 
 		expect(piece).to.equal(undefined)
 		expect(capturedPiece).to.not.equal(undefined)

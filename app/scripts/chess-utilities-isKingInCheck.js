@@ -31,9 +31,12 @@ chess.utilities.isKingInCheck = function(side, pathDetails) {
 			})
 			if (pathDetails.dependenciesPass) {
 				var rook = pathDetails.castle.rookPiece
-				rook.set('position', pathDetails.castle.newRookPosition)
-				rook.set('cssPosition', pathDetails.castle.newCssPosition)
+				rook.set({
+					'position':    pathDetails.castle.newRookPosition,
+					'cssPosition': pathDetails.castle.newCssPosition
+				})
 				rook.instruct()
+				pathDetails.notation.castle = true;
 			}
 		} else if (chess.setup.attackedSquares.indexOf(kingPosition) > -1) {
 			// king is in check
