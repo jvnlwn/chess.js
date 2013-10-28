@@ -54,16 +54,11 @@ chess.utilities.isAPath = function(pathDetails) {
 		var fileSlice = chess.utilities.innerSquares(setup.file, fileDiff, ranks, pathDetails)
 
 		var combinedSlices = [];
-		var x = rankSlice.squares.length
 
 		if (rankSlice.direction === fileSlice.direction) {
-			for (i = 0; i < x; i++) {
-				combinedSlices.push(fileSlice.squares[i] + rankSlice.squares[i])
-			}
+			_.zip(fileSlice.squares, rankSlice.squares).forEach(function(x){ combinedSlices.push(x.join(''))})
 		} else {
-			for (i = 0; i < x; i++) {
-				combinedSlices.push(fileSlice.squares[i] + rankSlice.squares[Math.abs(i - (x - 1))])
-			}		
+			_.zip(fileSlice.squares, rankSlice.squares.reverse()).forEach(function(x){ combinedSlices.push(x.join(''))})
 		}
 
 		pathDetails.innerSquares = combinedSlices;

@@ -47,7 +47,7 @@ PromotionPiecesView = Backbone.View.extend({
 		var pieceToken = collection.add(this.chosen(oldAttributes)).get('notation').toUpperCase();
 
 		this.options.notation.promote = true;
-		this.options.notation.promote = pieceToken;
+		this.options.notation.pieceToken = pieceToken;
 
 		chess.utilities.checkmate(oldAttributes.opponent, this.options);
 	},

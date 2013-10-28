@@ -56,7 +56,7 @@ Pieces['king'] = Piece.extend({
 				left: chess.setup.percentages.left['f'],
 				top: chess.setup.percentages.top[rank]
 			}
-			var side = 'king';
+			var side = 'O-O';
 
 		} else {
 			var targetRook = 'a' + rank;
@@ -67,7 +67,7 @@ Pieces['king'] = Piece.extend({
 				left: chess.setup.percentages.left['d'],
 				top: chess.setup.percentages.top[rank]
 			}
-			var side = 'queen';
+			var side = 'O-O-O';
 		}
 
 		var rook = this.collection.findWhere({position: targetRook});
