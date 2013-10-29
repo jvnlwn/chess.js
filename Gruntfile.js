@@ -8,6 +8,19 @@
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
+
+    // underscore-ish extend
+    function extend (obj) {
+      Array.prototype.slice.call(arguments, 1).forEach(function(source) {
+        if (source) {
+          for (var prop in source) {
+            obj[prop] = source[prop];
+          }
+        }
+      });
+      return obj;
+    }
+
     // show elapsed time at the end
     require('time-grunt')(grunt);
     // load all grunt tasks
@@ -19,43 +32,70 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
+    var watchBaseConfig = {
+      templates: {
+          files: ['<%= yeoman.app %>/templates/{,*/}*.html'],
+          tasks: ['jst']
+      },
+      coffee: {
+          files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+          tasks: ['coffee:dist']
+      },
+      coffeeTest: {
+          files: ['test/spec/{,*/}*.coffee'],
+          tasks: ['coffee:test']
+      },
+      compass: {
+          files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+          tasks: ['compass:server', 'autoprefixer']
+      },
+      styles: {
+          files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
+          tasks: ['copy:styles', 'autoprefixer']
+      }
+    }
+
+    var watchLivereloadConfig = {
+      livereload: {
+          options: {
+              livereload: '<%= connect.options.livereload %>'
+          },
+          files: [
+              '<%= yeoman.app %>/*.html',
+              '.tmp/styles/{,*/}*.css',
+              '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
+              '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          ]
+      }
+    }
+
+    var watchTestConfig = {
+      test: {
+          files: ['test/spec/{,*/}*.{js,coffee}', '<%= yeoman.app %>/{,*/}*.{js,coffee}'],
+          tasks: ['test']
+      }
+    }
+
     grunt.initConfig({
         yeoman: yeomanConfig,
-        watch: {
-            coffee: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-                tasks: ['coffee:dist']
-            },
-            coffeeTest: {
-                files: ['test/spec/{,*/}*.coffee'],
-                tasks: ['coffee:test']
-            },
-            compass: {
-                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
-            },
-            styles: {
-                files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-                tasks: ['copy:styles', 'autoprefixer']
-            },
-            livereload: {
-                options: {
-                    livereload: '<%= connect.options.livereload %>'
-                },
-                files: [
-                    '<%= yeoman.app %>/*.html',
-                    '.tmp/styles/{,*/}*.css',
-                    '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-                    '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-                ]
-            }
-        },
+        watch: extend(watchBaseConfig, watchLivereloadConfig),
         connect: {
             options: {
                 port: 9000,
-                livereload: 35729,
                 // change this to '0.0.0.0' to access the server from outside
+                livereload: 35728,
                 hostname: 'localhost'
+            },
+            testServer: {
+                options: {
+                    open: true,
+                    port: 9002,
+                    base: [
+                        '.tmp',
+                        'test',
+                        yeomanConfig.app
+                    ]
+                }
             },
             livereload: {
                 options: {
@@ -68,6 +108,7 @@ module.exports = function (grunt) {
             },
             test: {
                 options: {
+                    port: 9001,
                     base: [
                         '.tmp',
                         'test',
@@ -81,6 +122,13 @@ module.exports = function (grunt) {
                     base: yeomanConfig.dist
                 }
             }
+        },
+        jst: {
+          compile: {
+            files: {
+              ".tmp/scripts/templates.js": ["<%= yeoman.app %>/templates/**/*.html"]
+            }
+          }
         },
         clean: {
             dist: {
@@ -106,7 +154,7 @@ module.exports = function (grunt) {
                 'test/spec/{,*/}*.js'
             ]
         },
-        mocha: {
+        mocha_phantomjs: {
             all: {
                 options: {
                     run: true,
@@ -239,15 +287,15 @@ module.exports = function (grunt) {
             // blocks for your CSS. By default, the Usemin block from your
             // `index.html` will take care of minification, e.g.
             //
-            //     <!-- build:css({.tmp,app}) styles/main.css -->
+            //    <!-- build:css({.tmp,app}) styles/main.css -->
             //
             // dist: {
-            //     files: {
-            //         '<%= yeoman.dist %>/styles/main.css': [
-            //             '.tmp/styles/{,*/}*.css',
-            //             '<%= yeoman.app %>/styles/{,*/}*.css'
-            //         ]
-            //     }
+            //    files: {
+            //        '<%= yeoman.dist %>/styles/main.css': [
+            //            '.tmp/styles/{,*/}*.css',
+            //            '<%= yeoman.app %>/styles/{,*/}*.css'
+            //        ]
+            //    }
             // }
         },
         htmlmin: {
@@ -283,7 +331,8 @@ module.exports = function (grunt) {
                         '*.{ico,png,txt}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
-                        'styles/fonts/{,*/}*.*'
+                        'styles/fonts/{,*/}*.*',
+                        'bower_components/sass-bootstrap/fonts/*.*'
                     ]
                 }]
             },
@@ -297,15 +346,18 @@ module.exports = function (grunt) {
         },
         concurrent: {
             server: [
+                'jst',
                 'compass',
                 'coffee:dist',
                 'copy:styles'
             ],
             test: [
+                'jst',
                 'coffee',
                 'copy:styles'
             ],
             dist: [
+                'jst',
                 'coffee',
                 'compass',
                 'copy:styles',
@@ -335,7 +387,21 @@ module.exports = function (grunt) {
         'concurrent:test',
         'autoprefixer',
         'connect:test',
-        'mocha'
+        'mocha_phantomjs'
+    ]);
+
+    grunt.registerTask('watch:test', function() {
+      var config = extend(watchBaseConfig, watchTestConfig)
+      grunt.config('watch', config);
+      grunt.task.run('watch');
+    });
+
+    grunt.registerTask('test-server', [
+        'clean:server',
+        'concurrent:test',
+        'autoprefixer',
+        'connect:testServer',
+        'watch:test'
     ]);
 
     grunt.registerTask('build', [
@@ -356,4 +422,7 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
+
+    // Automatic notifications when tasks fail.
+    grunt.loadNpmTasks('grunt-notify');
 };

@@ -1,7 +1,9 @@
 {
-  "name": "chess",
+  "name": "chess.js",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "bower": "~1.2.7"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
@@ -24,7 +26,10 @@
     "grunt-svgmin": "~0.2.0",
     "grunt-concurrent": "~0.3.0",
     "load-grunt-tasks": "~0.1.0",
-    "time-grunt": "~0.1.1"
+    "time-grunt": "~0.1.1",
+    "grunt-contrib-jst": "~0.5.1",
+    "grunt-notify": "~0.2.13",
+    "grunt-mocha-phantomjs": "~0.3.0"
   },
   "engines": {
     "node": ">=0.8.0"
