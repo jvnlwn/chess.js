@@ -21,7 +21,7 @@ chess.utilities.isKingInCheck = function(side, pathDetails) {
 		var kingPosition = king.get('position');
 
 		opponentCollection.each(function(piece, index){
-		    chess.utilities.isTargeted(piece, kingPosition, index)
+		    chess.utilities.isTargeted(chess.utilities.findAPath(piece), piece, kingPosition, index)
 		})
 
 		// just coloring the squares

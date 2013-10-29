@@ -12,9 +12,6 @@ chess.utilities.findAPath = function(piece) {
 	var rankIndex = chess.setup.rank.indexOf(rank)
 	var fileIndex = chess.setup.file.indexOf(file)
 
-	paths.forEach(function(path) {
-		pathFinder[path]();
-	})
 
 	pathFinder['file'] = function() {
 		for (i = 0; i < 8; i++) {
@@ -36,7 +33,7 @@ chess.utilities.findAPath = function(piece) {
 		pathDirections.push(tillUndefined(fileIndex, rankIndex, (-1), (+1), []))
 
 		function tillUndefined(fileIndex, rankIndex, fileChange, rankChange, array) {
-			if (chess.setup.file[fileIndex] !== undefined && chess.setup.rank[rankIndex]) {
+			if (chess.setup.file[fileIndex] && chess.setup.rank[rankIndex]) {
 				array.push(chess.setup.file[fileIndex] + chess.setup.rank[rankIndex])
 				return tillUndefined(fileIndex + fileChange, rankIndex + rankChange, fileChange, rankChange, array)
 			} else {
@@ -45,15 +42,75 @@ chess.utilities.findAPath = function(piece) {
 		}
 	}
 
+	pathFinder['l-shape'] = function() {
+
+		pathDirections.push(ifUndefined(fileIndex + 1, rankIndex + 2, (-2), (+0), [], 0))
+		pathDirections.push(ifUndefined(fileIndex + 1, rankIndex - 2, (-2), (+0), [], 0))
+		pathDirections.push(ifUndefined(fileIndex + 2, rankIndex - 1, (+0), (+2), [], 0))
+		pathDirections.push(ifUndefined(fileIndex - 2, rankIndex - 1, (+0), (+2), [], 0))
+
+		function ifUndefined(fileIndex, rankIndex, fileChange, rankChange, array, count) {
+			count++;
+			if (chess.setup.file[fileIndex] && chess.setup.rank[rankIndex]) {
+				array.push(chess.setup.file[fileIndex] + chess.setup.rank[rankIndex])
+			} 
+			if (count < 2) {
+				return ifUndefined(fileIndex + fileChange, rankIndex + rankChange, fileChange, rankChange, array)
+			} else {
+				return array;
+			}
+			
+		}
+	}
+
+	if (piece.get('piece') === 'king') {
+
+		pathDirections.push(chess.utilities.kingMoves(piece))
+
+	} else if (piece.get('piece') === 'pawn') {
+
+		if (piece.get('player') === 'white') {
+			var op = (+1)
+		} else {
+			var op = (-1)
+		}
+
+		pathDirections.push(undefinedCheck(chess.setup.file[fileIndex], + chess.setup.rank[rankIndex + op], true))
+		pathDirections.push(undefinedCheck(chess.setup.file[fileIndex], + chess.setup.rank[rankIndex + (2*op)], !piece.get('moved')))
+		pathDirections.push(undefinedCheck(chess.setup.file[fileIndex + 1], + chess.setup.rank[rankIndex + op], true))
+		pathDirections.push(undefinedCheck(chess.setup.file[fileIndex - 1], + chess.setup.rank[rankIndex + op], true))
+
+		function undefinedCheck(a, b, range) {
+			if (a && b && range) {
+				return a + b;
+
+			} else {
+				return [];
+			}
+		}
+
+	} else {
+
+		paths.forEach(function(path) {
+			pathFinder[path]();
+		})
+	}
+
 	pathDirections = _.union(_.flatten(pathDirections))
 
-	chess.setup.squares.forEach(function(square) {
-		if (pathDirections.indexOf(square) > -1) {
-			$('.' + square).css('background', 'rgba(177, 142, 238, .3)')
-		}
-	})
+	var index = pathDirections.indexOf(position)
+	if (index > -1) {
+		pathDirections.splice(index, 1)
+	}
 
-	console.log(pathDirections)
+	// chess.setup.squares.forEach(function(square) {
+	// 	if (pathDirections.indexOf(square) > -1) {
+	// 		$('.' + square).css('background', 'rgba(177, 142, 238, .3)')
+	// 	}
+	// })
+
+	return pathDirections
+
 }
 
 

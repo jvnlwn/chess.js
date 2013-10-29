@@ -1,7 +1,7 @@
-chess.utilities.isTargeted = function(piece, kingPosition, index) {
+chess.utilities.isTargeted = function(squares, piece, kingPosition, index) {
 	var setup = chess.setup;
 
-	setup.squares.forEach(function(square, i) {
+	squares.forEach(function(square, i) {
 
 		if (piece.get('position') !== square) {
 
