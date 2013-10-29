@@ -133,7 +133,6 @@ Piece = Backbone.Model.extend({
 
 			if (pieceIsThere) {
 				if (pieceIsThere.get('player') === this.get('opponent')) {
-					// pieceIsThere.collection.remove(pieceIsThere)
 					pieceIsThere.destroy()
 					pathDetails.notation.capture = true;
 				}				

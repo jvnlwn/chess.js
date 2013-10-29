@@ -1,38 +1,27 @@
-chess.utilities.isTargeted = function(collection, targetSquare, kingPosition, index) {
+chess.utilities.isTargeted = function(squares, piece, kingPosition, index) {
 	var setup = chess.setup;
-	var i = index;
 
-	var number = setup.rank[Math.floor(i / 8)];
-	var klass = '.' + setup.squares[i];
+	squares.forEach(function(square, i) {
 
-	setup.squares[index].defended = false;
-	$(klass).css('background', setup.colorCycles[number % 2 + 1][i % 2])
-
-	setup.squares[i].defended = false;
-
-	collection.each(function(piece) {
-
-		if (piece.get('position') !== targetSquare) {
+		if (piece.get('position') !== square) {
 
 			var pathDetails = new setup.PathDetails({
 				position:    piece.get('position'),
-				newPosition: targetSquare,
+				newPosition: square,
 				targeting:   true,
 				canTarget:   true
 			})
-			
-			pathDetails = $.extend(pathDetails, chess.utilities.isAPath(pathDetails));
-			pathDetails = $.extend(pathDetails, piece.isPathKnown(pathDetails))
-			pathDetails = $.extend(pathDetails, piece.dependencies(pathDetails))
 
-			if (pathDetails.dependenciesPass && pathDetails.canTarget && setup.attackedSquares.indexOf(targetSquare) === -1) {
-				setup.attackedSquares.push(targetSquare)
+			var paths = piece.get('paths');
 
-				$('.' + targetSquare).css('background', 'rgba(177, 142, 238, .3)')
+			pathDetails = $.extend(pathDetails, piece.checkMove(pathDetails))
 
-				if (targetSquare === kingPosition) {
-					chess.setup.blockOrCapture.push(pathDetails.position)
-					chess.setup.blockOrCapture.push(pathDetails.innerSquares)
+			if (pathDetails.dependenciesPass && pathDetails.canTarget && setup.attackedSquares.indexOf(square) === -1) {
+				setup.attackedSquares.push(square)
+
+				if (square === kingPosition) {
+					setup.blockOrCapture.push(pathDetails.position)
+					setup.blockOrCapture.push(pathDetails.innerSquares)
 				}
 			}
 

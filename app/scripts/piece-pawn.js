@@ -8,6 +8,7 @@ Pieces['pawn'] = Piece.extend({
 		this.set('notation', '')
 		this.set('piece', 'pawn')
 		this.set('paths', ['file', 'diagonal'])
+		this.set('moved', false)
 
 		this.set('dependencies', {
 			'file': { 
@@ -25,6 +26,8 @@ Pieces['pawn'] = Piece.extend({
 		this.checkInitialMove();
 		pathDetails = $.extend(pathDetails, this.enPassant(pathDetails));
 		this.resetPawns();
+
+		this.set('moved', true)
 
 		this.set('dependencies', {
 			'file': { 

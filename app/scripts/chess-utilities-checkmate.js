@@ -21,7 +21,7 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 		    }
 		}
 
-		chess.utilities.squareSearch(chess.utilities.kingMoves(collection), player, king, kingPosition, checkKing)
+		chess.utilities.squareSearch(chess.utilities.kingMoves(king), player, king, kingPosition, checkKing)
 
 		if (!kingCanMove) {
 

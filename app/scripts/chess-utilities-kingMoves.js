@@ -1,12 +1,12 @@
-chess.utilities.kingMoves = function(collection) {
+chess.utilities.kingMoves = function(king) {
 
-	var kingPosition = collection.findWhere({'piece': 'king'}).get('position');
-	var squaresToCheck = _.union(_.flatten(chess.setup.blockOrCapture))
+	// var kingPosition = collection.findWhere({'piece': 'king'}).get('position');
+	// var squaresToCheck = _.union(_.flatten(chess.setup.blockOrCapture))
 
 	var possibleMoves = [];
 
-	var file = chess.setup.file.indexOf(kingPosition.slice(0, 1))
-	var rank = chess.setup.rank.indexOf(kingPosition.slice(1))
+	var file = chess.setup.file.indexOf(king.get('position').slice(0, 1))
+	var rank = chess.setup.rank.indexOf(king.get('position').slice(1))
 	
 	file = file === 0 ? 0 : file - 1
 	rank = rank === 0 ? 0 : rank - 1
