@@ -3,59 +3,67 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Mocha Spec Runner</title>
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
     <link rel="stylesheet" href="lib/mocha/mocha.css">
 </head>
 <body>
-    <div id="mocha" style="background: #D3D3D3; position:relative; z-index: 101"></div>
-    <script src="lib/mocha/mocha.js"></script>
 
     <!--[if lt IE 10]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+    <h1 style="margin-top: -24px;">Chess.js Specs</h1>
+    <div class="chess-board" style="width: 640px; height: 640px; position: relative; float: left;"></div>
+    <div style="float: right; overflow-y: scroll; height: 640px; width: 520px;">
+        <div id="mocha"></div>
+    </div>
 
-    <div class="chess-board" style="width: 640px; height: 640px; margin: 50px auto; position: relative"></div>
-
-    <script>mocha.setup('bdd')</script>
+    <script src="lib/mocha/mocha.js"></script>
+    <script>mocha.setup({ui: 'bdd', globals: ['LiveReload']})</script>
     <!-- assertion framework -->
     <script src="lib/chai.js"></script>
     <script>var expect = chai.expect</script>
 
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/backbone/backbone.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-
-
-    <!-- include source files here... -->
-    <script src="../app/bower_components/jquery/jquery.js"></script>
-    <script src="../app/bower_components/underscore/underscore.js"></script>
-    <script src="../app/bower_components/backbone/backbone.js"></script>
-    <script src="../app/scripts/draggabilly.js"></script>
-    <script src="../app/scripts/chess-setup.js"></script>
-    <script src="../app/scripts/chess-utilities-newGame.js"></script>
-    <script src="../app/scripts/chess-utilities-findClosest.js"></script>
-    <script src="../app/scripts/chess-utilities-reassignId.js"></script>
-    <script src="../app/scripts/chess-utilities-innerSquares.js"></script>
-    <script src="../app/scripts/chess-utilities-isAPath.js"></script>
-    <script src="../app/scripts/chess-utilities-findAPath.js"></script>
-    <script src="../app/scripts/chess-utilities-isTargeted.js"></script>
-    <script src="../app/scripts/chess-utilities-isKingInCheck.js"></script>
-    <script src="../app/scripts/chess-utilities-kingMoves.js"></script>
-    <script src="../app/scripts/chess-utilities-squareSearch.js"></script>
-    <script src="../app/scripts/chess-utilities-checkmate.js"></script>
-    <script src="../app/scripts/chess-utilities-toPNG.js"></script>
-    <script src="../app/scripts/promotion-view.js"></script>
-    <script src="../app/scripts/piece-view.js"></script>
-    <script src="../app/scripts/piece.js"></script>
-    <script src="../app/scripts/piece-pawn.js"></script>
-    <script src="../app/scripts/piece-rook.js"></script>
-    <script src="../app/scripts/piece-knight.js"></script>
-    <script src="../app/scripts/piece-bishop.js"></script>
-    <script src="../app/scripts/piece-queen.js"></script>
-    <script src="../app/scripts/piece-king.js"></script>
-    <script src="../app/scripts/collections.js"></script>
-    <script src="../app/scripts/main.js"></script>
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/draggabilly.js"></script>
+    <script src="scripts/chess-setup.js"></script>
+    <script src="scripts/chess-utilities-newGame.js"></script>
+    <script src="scripts/chess-utilities-findClosest.js"></script>
+    <script src="scripts/chess-utilities-reassignId.js"></script>
+    <script src="scripts/chess-utilities-innerSquares.js"></script>
+    <script src="scripts/chess-utilities-isAPath.js"></script>
+    <script src="scripts/chess-utilities-findAPath.js"></script>
+    <script src="scripts/chess-utilities-isTargeted.js"></script>
+    <script src="scripts/chess-utilities-isKingInCheck.js"></script>
+    <script src="scripts/chess-utilities-kingMoves.js"></script>
+    <script src="scripts/chess-utilities-squareSearch.js"></script>
+    <script src="scripts/chess-utilities-checkmate.js"></script>
+    <script src="scripts/chess-utilities-toPNG.js"></script>
+    <script src="scripts/promotion-view.js"></script>
+    <script src="scripts/piece-view.js"></script>
+    <script src="scripts/piece.js"></script>
+    <script src="scripts/piece-pawn.js"></script>
+    <script src="scripts/piece-rook.js"></script>
+    <script src="scripts/piece-knight.js"></script>
+    <script src="scripts/piece-bishop.js"></script>
+    <script src="scripts/piece-queen.js"></script>
+    <script src="scripts/piece-king.js"></script>
+    <script src="scripts/collections.js"></script>
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
 
     <!-- include spec files here... -->
     <script src="spec/test.js"></script>
 
-    <script>mocha.run()</script>
+    <script>window.mochaPhantomJS ? mochaPhantomJS.run() : mocha.run()</script>
 </body>
 </html>
