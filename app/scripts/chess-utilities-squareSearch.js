@@ -20,6 +20,7 @@ chess.utilities.squareSearch = function(squares, player, piece, piecePosition, i
 
 		if (pathDetails.dependenciesPass) {
 
+			// do stuff here with passed in function
 			ifDepsPass(pathDetails)
 		}
 
@@ -30,7 +31,6 @@ chess.utilities.squareSearch = function(squares, player, piece, piecePosition, i
 		}
 
 		piece.set('position', piecePosition);
-
-	})
-	
+	})	
 }
+

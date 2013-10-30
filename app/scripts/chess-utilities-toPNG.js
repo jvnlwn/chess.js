@@ -78,5 +78,5 @@ chess.utilities.toPNG = function(pathDetails) {
 		notation += pathDetails.notation.side;
 	}
 
-	console.log(notation)
+	// console.log(notation)
 }

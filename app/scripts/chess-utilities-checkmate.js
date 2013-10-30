@@ -61,6 +61,44 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 			pathDetails.notation.check = true;		
 		}
 		
+	} else {
+		// check for stalemate
+		var pass = false
+
+		function stalemate(i) {
+			var piece = collection.at(i)
+
+			if (piece === undefined) {
+				return
+			}
+
+			chess.utilities.squareSearch(chess.utilities.findAPath(piece), player, piece, piece.get('position'), stalemateCheck)
+			
+			if (pass) {
+				return;
+			} else {
+				i++;
+				stalemate(i)
+			}
+		}
+
+		function stalemateCheck(pathDetails) {
+			if (chess.utilities.isKingInCheck(player, pathDetails)) {
+
+				if (chess.setup.attackedSquares.indexOf(collection.findWhere({'piece': 'king'}).get('position')) < 0) {
+					// piece can either block or capture
+					pass = true;
+				}
+			}
+		}
+
+		stalemate(0)
+
+		if (!pass) {
+			console.log('STALEMATE!!')
+			pathDetails.notation.stalemate = true;
+		}
 	}
 	chess.utilities.toPNG(pathDetails);
 }
+
