@@ -60,7 +60,7 @@ Pieces['pawn'] = Piece.extend({
 				pathDetails.dependenciesPass = false;
 			}
 				
-			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
+			var pieceIsThere = gameRouter.blackPieces.findWhere({position: pathDetails.newPosition}) || gameRouter.whitePieces.findWhere({position: pathDetails.newPosition});
 
 			// check occupatoin for file path
 			if (pieceIsThere && dependencies.occupied === false) {
@@ -109,7 +109,7 @@ Pieces['pawn'] = Piece.extend({
 	enPassant: function(pathDetails) {
 		if (this.get('targetSquare')) {
 			if (this.get('position') === this.get('targetSquare')) {
-				var collection = this.get('opponent') === 'white' ? whitePieces : blackPieces;
+				var collection = this.get('opponent') === 'white' ? gameRouter.whitePieces : gameRouter.blackPieces;
 				var capturedPawn = collection.findWhere({'position': this.get('enemyPawn')})
 				capturedPawn.destroy();
 				pathDetails.notation.capture = true;
@@ -130,7 +130,7 @@ Pieces['pawn'] = Piece.extend({
 			var secondSide = chess.setup.file[index + 1] + rank
 			var targetSquare;
 
-			var collection = this.get('opponent') === 'white' ? whitePieces : blackPieces;
+			var collection = this.get('opponent') === 'white' ? gameRouter.whitePieces : gameRouter.blackPieces;
 
 			if (parseInt(rank) === 4) {
 				targetSquare = file + '3';

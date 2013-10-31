@@ -1,6 +1,6 @@
 chess.utilities.checkmate = function(opponent, pathDetails) {
 
-	var collection = opponent === 'white' ? whitePieces : blackPieces;
+	var collection = opponent === 'white' ? gameRouter.whitePieces : gameRouter.blackPieces;
 
 	var counterSquares = [];
 	var pieceCanSave = false;

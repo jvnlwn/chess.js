@@ -10,18 +10,18 @@ chess.utilities.isKingInCheck = function(side, pathDetails) {
 		var opponentCollection;
 
 		if (side === 'white') {
-			playerCollection = whitePieces;
-			opponentCollection = blackPieces;
+			playerCollection = gameRouter.whitePieces;
+			opponentCollection = gameRouter.blackPieces;
 		} else {
-			playerCollection = blackPieces;
-			opponentCollection = whitePieces;
+			playerCollection = gameRouter.blackPieces;
+			opponentCollection = gameRouter.whitePieces;
 		}
 
 		var king = playerCollection.findWhere({'piece': 'king'});
 		var kingPosition = king.get('position');
 
 		opponentCollection.each(function(piece, index){
-		    chess.utilities.isTargeted(chess.utilities.findAPath(piece), piece, kingPosition, index)
+		    chess.utilities.isTargeted(chess.utilities.findAPath(piece),piece, kingPosition, index)
 		})
 
 		// just coloring the squares

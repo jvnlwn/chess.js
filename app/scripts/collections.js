@@ -1,7 +1,9 @@
-PiecesSet = Backbone.Collection.extend({
+PiecesSet = Backbone.Firebase.Collection.extend({
 	model: Piece,
 
 	initialize: function(models, options) {
+		this.options = options;
+
 		this.capturedPieces = new CapturedPieces()
 
 		this.on('add', function(model) {

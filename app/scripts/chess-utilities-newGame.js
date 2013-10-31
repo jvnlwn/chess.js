@@ -30,8 +30,8 @@ chess.utilities.newGame = function() {
 		$('.chess-board').prepend($(square).css(cssSquare))
 
 		var collections = {
-			'white': whitePieces,
-			'black': blackPieces
+			'white': gameRouter.whitePieces,
+			'black': gameRouter.blackPieces
 		}
 
 		var pieceWithColor = setup.piecePosition[position] || setup.piecePosition[rankValue];
@@ -41,7 +41,7 @@ chess.utilities.newGame = function() {
 			var player = setup.color[pieceWithColor.slice(0,1)];
 			var opponent = setup.opponentColor[pieceWithColor.slice(0,1)];
 
-			var piece = new Pieces[setup.pieceType[pieceToken]]({
+			var piece = new Piece({
 				image:       pieceWithColor,
 				position:    position,
 				player:      player,

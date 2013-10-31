@@ -8,7 +8,8 @@ Piece = Backbone.Model.extend({
 		}
 
 		if (pathDetails.dependenciesPass) {
-			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
+			var pieceIsThere = gameRouter.blackPieces.findWhere({position: pathDetails.newPosition}) || gameRouter.whitePieces.findWhere({position: pathDetails.newPosition});
+			// var pieceIsThere = gameRouter.allPieces.findWhere({position: pathDetails.newPosition});
 
 			if ((pieceIsThere) && (pieceIsThere.get('player') === this.get('player'))) {
 				// player already occupies target square
@@ -22,7 +23,8 @@ Piece = Backbone.Model.extend({
 			if (pathDetails.path !== 'l-shape') {
 
 				pathDetails.innerSquares.forEach(function(square) {
-					var pieceIsThere = blackPieces.findWhere({position: square}) || whitePieces.findWhere({position: square});
+					var pieceIsThere = gameRouter.blackPieces.findWhere({position: square}) || gameRouter.whitePieces.findWhere({position: square});
+					// var pieceIsThere = gameRouter.allPieces.findWhere({position: square});
 
 					if (pieceIsThere) {
 						// path is blocked
@@ -64,7 +66,8 @@ Piece = Backbone.Model.extend({
 
 			pathDetails = that.checkMove(that.targetSquare(pathDetails))
 
-			var pieceIsThere = blackPieces.findWhere({position: pathDetails.newPosition}) || whitePieces.findWhere({position: pathDetails.newPosition});
+			var pieceIsThere = gameRouter.blackPieces.findWhere({position: pathDetails.newPosition}) || gameRouter.whitePieces.findWhere({position: pathDetails.newPosition});
+			// var pieceIsThere = gameRouter.allPieces.findWhere({position: pathDetails.newPosition});
 
 			pathDetails.dependenciesPass = that.checkKing(that.get('player'), pathDetails, pieceIsThere)
 
@@ -128,8 +131,11 @@ Piece = Backbone.Model.extend({
 			// view.options.cssPosition = pathDetails.newPercentages;
 			// view.$el.css(view.options.cssPosition);
 			// view.$el.attr('id', pathDetails.newPosition);
+
 			
 			this.set('cssPosition', pathDetails.newPercentages)
+
+
 
 			if (pieceIsThere) {
 				if (pieceIsThere.get('player') === this.get('opponent')) {
