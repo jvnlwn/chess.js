@@ -28,5 +28,11 @@ PiecesSet = Backbone.Collection.extend({
 })
 
 CapturedPieces = Backbone.Collection.extend({
-	model: Piece
+	model: Piece,
+
+	initialize: function() {
+		this.on('add', function(piece) {
+			new CapturedPieceView({model: piece})
+		})
+	}
 })

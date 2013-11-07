@@ -30,7 +30,7 @@ chess.utilities.isKingInCheck = function(side, pathDetails) {
 			$('.' + square).css('background', setup.colorCycles[number % 2 + 1][i % 2])
 
 			if (setup.attackedSquares.indexOf(square) > -1) {
-				$('.' + square).css('background', 'rgba(177, 142, 238, .3)')
+				$('.' + square).css('background', 'rgba(233, 53, 146, 0.298039)')
 			}
 		})
 

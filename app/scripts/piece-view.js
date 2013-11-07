@@ -58,11 +58,10 @@ PieceView = Backbone.View.extend({
 	displayPiece: function() {
 		this.$el.css({
 			background: 'url("../images/' + this.model.get('image') + '.png") no-repeat center center',
-			// background: 'url("../app/images/' + this.model.get('image') + '.png") no-repeat center center',
 			'background-size': 'cover',
-			width: '8%',
-			height: '8%',
-			margin: '2.2%'
+			width: '11%',
+			height: '11%',
+			margin: '.8%'
 		})
 	}
 })

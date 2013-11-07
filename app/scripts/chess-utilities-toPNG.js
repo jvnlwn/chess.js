@@ -1,4 +1,7 @@
 chess.utilities.toPNG = function(pathDetails) {
+	var template = _.template($('#notation').text());
+	var move = {}
+
 	var notation = '';
 
 	if (!pathDetails.notation.castle) {
@@ -78,5 +81,25 @@ chess.utilities.toPNG = function(pathDetails) {
 		notation += pathDetails.notation.side;
 	}
 
-	// console.log(notation)
+	console.log(notation)
+
+	chess.setup.png.push(notation)
+
+	if (chess.setup.png.length % 2 === 0) {
+		// move.blackMove = notation
+		var lastMove = $('.all-moves').children().last().children().last().text(notation);
+		// var lastMove = $('.all-moves').children().last();
+		// lastMove
+	} else {
+		move.number = chess.setup.png.length === 1 ? 1 : chess.setup.png.length / 2 + .5;
+		move.whiteMove = notation
+		$('.all-moves').append(template({notation: move}))
+	}
+
+	$('.last-move').text(notation)
+
+
+
 }
+
+

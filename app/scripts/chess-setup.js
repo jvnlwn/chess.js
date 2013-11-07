@@ -29,8 +29,8 @@ chess.setup = {
 
 	png: [],
 
-	darkSquare: 'rgb(148, 109, 41)',
-	lightSquare:'rgb(255, 213, 139)',
+	darkSquare: 'rgb(28, 150, 189)',
+	lightSquare:'rgb(183, 238, 248)',
 
 	percentages: {
 		top: {

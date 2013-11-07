@@ -10,6 +10,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link href='http://fonts.googleapis.com/css?family=Cinzel+Decorative' rel='stylesheet' type='text/css'>
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
@@ -19,7 +20,36 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="chess-board">
+        <header></header>
+
+        <div class="wrapper">
+            <div class="chess-board"></div
+            ><div class="side-bar">
+                <div class="notation">
+                    <div class="last-move"></div>
+                    <div class="single-move-view">
+                        <div class="all-moves"></div>
+                    </div>
+                </div>
+
+                <div class="captured-pieces">
+                    <div class="white"></div>
+                    <div class="black"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/template" id="notation">
+            <div class="move">
+                <span class="number">
+                    <strong><%= notation.number %></strong>
+                </span>
+                <span class="white-move"><%= notation.whiteMove %></span>
+                <span class="black-move"><%= notation.blackMove %></span>
+            </div>
+        </script>
+
 
 <!--             <div class="promotion-view">
                 <div class="promote queen"></div>
@@ -27,7 +57,6 @@
                 <div class="promote knight"></div>
                 <div class="promote bishop"></div>
             </div> -->
-        </div>
 
         <div id="what"></div>
 
@@ -66,6 +95,7 @@
         <script src="scripts/chess-utilities-checkmate.js"></script>
         <script src="scripts/chess-utilities-toPNG.js"></script>
         <script src="scripts/promotion-view.js"></script>
+        <script src="scripts/captured-piece-view.js"></script>
         <script src="scripts/piece-view.js"></script>
         <script src="scripts/piece.js"></script>
         <script src="scripts/piece-pawn.js"></script>

@@ -51,7 +51,7 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 
 		if (counterSquares.length > 0) {
 			counterSquares.forEach(function(square) {
-				$('.' + square).css('background', 'rgba(30, 80, 140, .8)')
+				$('.' + square).css('background', 'rgba(140, 30, 56, 0.8)')
 			})
 		}
 

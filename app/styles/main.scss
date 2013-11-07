@@ -1,21 +1,123 @@
+$dark: rgb(28, 150, 189);
+
 body {
-    background: #fafafa;
+    margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #333;
 }
 
-.chess-board {
-    width: 480px;
-    height: 480px;
+* {
+    vertical-align: top;
+}
+
+header {
+    height: 40px;
+    margin-bottom: 50px;
+    background: $dark;
+}
+
+.wrapper {
+    width: 960px;
     margin: 0 auto;
-    position: relative;
+
+    .chess-board {
+        width: 640px;
+        height: 640px;
+        margin: 0 60px 90px 0;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .square {
+        width: 12.5%;
+        height: 12.5%;
+        position: absolute;
+    }
+
+    .side-bar {
+        width: 260px;
+        height: 640px;
+        // background: red;
+        display: inline-block;
+
+        .notation {
+            height: 25%;
+            margin-bottom: 20%;
+            background: $dark;
+            border-radius: 0 0 10px 10px;
+            position: relative;
+
+            
+            .last-move {
+                height: 75%;
+                color: #FFF;
+                font-size: 66px;
+                font-weight: lighter;
+                line-height: 120px;
+                text-align: center;
+            }
+
+            .all-moves {
+                position: absolute;
+                // overflow scoll on .single-move-view will not work with bottom: 0;
+                bottom: 0;
+            }
+        }
+
+        .captured-pieces {
+            height: 25%;
+            border: 4px solid $dark;
+            border-radius: 4px;
+
+            div {
+                height: 50%;
+            }
+
+            .white {
+               border-bottom: 4px solid $dark; 
+            }
+        }
+    }
 }
 
-.square {
-    width: 12.5%;
-    height: 12.5%;
-    position: absolute;
+.single-move-view {
+    height: 25%;
+    background: #FFF;
+    border: 4px solid $dark;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    overflow: hidden;
+    // overflow: scroll;
 }
+
+.move {
+    height: 36px;
+    font-size: 22px;
+    position: relative;
+    font-weight: 200;
+    display: block;
+
+    span {
+        position: absolute;
+        line-height: 30px;
+        display: inline-block;
+    }
+
+    .number {
+        right: -40px;
+    }
+    .white-move {
+        left: 50px;
+    }
+    .black-move {
+        left: 150px;
+    }
+}
+
+.captured {
+    display: inline-block;
+}
+
+
 
 .promote {
     width: 100px;
