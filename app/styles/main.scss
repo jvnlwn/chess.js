@@ -1,8 +1,10 @@
 $dark: rgb(28, 150, 189);
+$light: rgb(183, 238, 248);
 
 body {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: rgb(127, 193, 224);
 }
 
 * {
@@ -13,6 +15,15 @@ header {
     height: 40px;
     margin-bottom: 50px;
     background: $dark;
+
+    .nav {
+        color: #FFF;
+        width: 960px;
+        margin: 0 auto;
+        font-size: 24px;
+        font-weight: lighter;
+        line-height: 40px;
+    }
 }
 
 .wrapper {
@@ -22,7 +33,8 @@ header {
     .chess-board {
         width: 640px;
         height: 640px;
-        margin: 0 60px 90px 0;
+        border: 4px solid #1c96bd;
+        margin: 0 52px 90px 0;
         position: relative;
         display: inline-block;
     }
@@ -40,7 +52,8 @@ header {
         display: inline-block;
 
         .notation {
-            height: 25%;
+            // height: 25%;
+            height: 160px;
             margin-bottom: 20%;
             background: $dark;
             border-radius: 0 0 10px 10px;
@@ -69,7 +82,8 @@ header {
             border-radius: 4px;
 
             div {
-                height: 50%;
+                height: 48.5%;
+                background: $light;
             }
 
             .white {
@@ -80,8 +94,9 @@ header {
 }
 
 .single-move-view {
-    height: 25%;
-    background: #FFF;
+    // height: 25%;
+    height: 40px;
+    background: $light;
     border: 4px solid $dark;
     border-radius: 0 0 10px 10px;
     position: relative;

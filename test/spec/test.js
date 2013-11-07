@@ -126,7 +126,7 @@
 			}
 
 			done();
-		}, 150)
+		}, 50)
 	}
 
 	var captureTest = function(pieceSquare, pieceColor, pawnSquare) {
@@ -556,6 +556,7 @@
 
 			it('p at d7, 19. d8=? ... should be successful', function(done) {
 				moveTest('d7', 'd8', true, done)
+				// chess.setup.pgnText.push('d8=Q')
 			})
 			// check that pawn was promoted
 

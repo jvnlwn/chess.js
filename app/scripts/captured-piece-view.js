@@ -17,7 +17,7 @@ CapturedPieceView = Backbone.View.extend({
 			'background-size': 'cover',
 			width: '20%',
 			height: '45%',
-			margin: '.2% -3% 0'
+			margin: '1% -3% 0'
 		})
 	}
 

@@ -1,4 +1,4 @@
-chess.utilities.toPNG = function(pathDetails) {
+chess.utilities.toPGN = function(pathDetails) {
 	var template = _.template($('#notation').text());
 	var move = {}
 
@@ -35,30 +35,32 @@ chess.utilities.toPNG = function(pathDetails) {
 			var position = pathDetails.position
 
 			if (piecesPassing.length > 0) {
+				// check if files differ
 				piecesPassing = _.filter(piecesPassing, function(piece) {
 					if (piece.get('position').slice(0, 1) === position.slice(0, 1)) {
+						notation += position.slice(1);
 						return piece;
 					}
 				})
 
-				if (piecesPassing.length > 0) {
-					notation += position.slice(1);
-					piecesPassing = _.filter(piecesPassing, function(piece) {
-						if (piece.get('position').slice(1) === position.slice(1)) {
-							return piece;
-						}
-					})
+				// if (piecesPassing.length > 0) {
+				// 	notation += position.slice(1);
+				// 	piecesPassing = _.filter(piecesPassing, function(piece) {
+				// 		if (piece.get('position').slice(1) === position.slice(1)) {
+				// 			return piece;
+				// 		}
+				// 	})
 
-					if (piecesPassing.length > 0) {
+					if (piecesPassing.length === 0) {
 						notation += position.slice(0, 1);
 					}
-				}
+				// }
 			}
 		}
 
 		if (pathDetails.notation.capture) {
 			if (piece.get('piece') === 'pawn') {
-				notation += piece.get('position').slice(0, 1);
+				notation += pathDetails.position.slice(0, 1);
 			}
 			notation += 'x';
 		}
@@ -83,17 +85,19 @@ chess.utilities.toPNG = function(pathDetails) {
 
 	console.log(notation)
 
-	chess.setup.png.push(notation)
+	chess.setup.pgn.push(notation)
 
-	if (chess.setup.png.length % 2 === 0) {
-		// move.blackMove = notation
+	if (chess.setup.pgn.length % 2 === 0) {
+		move.blackMove = notation
 		var lastMove = $('.all-moves').children().last().children().last().text(notation);
-		// var lastMove = $('.all-moves').children().last();
-		// lastMove
+
+		chess.setup.pgnText += ' ' + move.blackMove + ' ';
 	} else {
-		move.number = chess.setup.png.length === 1 ? 1 : chess.setup.png.length / 2 + .5;
+		move.number = chess.setup.pgn.length === 1 ? 1 : chess.setup.pgn.length / 2 + .5;
 		move.whiteMove = notation
 		$('.all-moves').append(template({notation: move}))
+
+		chess.setup.pgnText += move.number + '. ' + move.whiteMove;
 	}
 
 	$('.last-move').text(notation)

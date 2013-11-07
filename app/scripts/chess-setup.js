@@ -27,7 +27,9 @@ chess.setup = {
 		this.notation =         {}
 	},
 
-	png: [],
+	pgn: [],
+
+	pgnText: '',
 
 	darkSquare: 'rgb(28, 150, 189)',
 	lightSquare:'rgb(183, 238, 248)',

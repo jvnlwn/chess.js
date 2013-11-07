@@ -99,6 +99,6 @@ chess.utilities.checkmate = function(opponent, pathDetails) {
 			pathDetails.notation.stalemate = true;
 		}
 	}
-	chess.utilities.toPNG(pathDetails);
+	chess.utilities.toPGN(pathDetails);
 }
 
