@@ -4,7 +4,7 @@ var blackPieces = new PiecesSet();
 
 // var allPieces = new AllPieces();
 
-;(function(){
-	chess.utilities.newGame()
-})();
+$(function() {
+	chess.utilities.newGame();
+});
 
