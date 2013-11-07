@@ -35,26 +35,19 @@ chess.utilities.toPGN = function(pathDetails) {
 			var position = pathDetails.position
 
 			if (piecesPassing.length > 0) {
-				// check if files differ
+				// check if files are same
 				piecesPassing = _.filter(piecesPassing, function(piece) {
 					if (piece.get('position').slice(0, 1) === position.slice(0, 1)) {
+						// differentiate by rank
 						notation += position.slice(1);
 						return piece;
 					}
 				})
 
-				// if (piecesPassing.length > 0) {
-				// 	notation += position.slice(1);
-				// 	piecesPassing = _.filter(piecesPassing, function(piece) {
-				// 		if (piece.get('position').slice(1) === position.slice(1)) {
-				// 			return piece;
-				// 		}
-				// 	})
-
-					if (piecesPassing.length === 0) {
-						notation += position.slice(0, 1);
-					}
-				// }
+				if (piecesPassing.length === 0) {
+					// differentiate by file
+					notation += position.slice(0, 1);
+				}
 			}
 		}
 
@@ -83,8 +76,6 @@ chess.utilities.toPGN = function(pathDetails) {
 		notation += pathDetails.notation.side;
 	}
 
-	console.log(notation)
-
 	chess.setup.pgn.push(notation)
 
 	if (chess.setup.pgn.length % 2 === 0) {
@@ -101,9 +92,6 @@ chess.utilities.toPGN = function(pathDetails) {
 	}
 
 	$('.last-move').text(notation)
-
-
-
 }
 
 

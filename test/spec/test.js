@@ -126,7 +126,7 @@
 			}
 
 			done();
-		}, 50)
+		}, 100)
 	}
 
 	var captureTest = function(pieceSquare, pieceColor, pawnSquare) {
@@ -556,17 +556,22 @@
 
 			it('p at d7, 19. d8=? ... should be successful', function(done) {
 				moveTest('d7', 'd8', true, done)
-				// chess.setup.pgnText.push('d8=Q')
 			})
 			// check that pawn was promoted
 
 			it('Q at c3, 19. ... Qxd3 should be successful', function(done) {
+				$('.promotion-view').children().first().click()
 				moveTest('c3', 'd3', true, done, 'white', true)
+			})
+
+			it('p at a2, 20. a3 ... should be successful', function(done) {
+				moveTest('a2', 'a3', true, done)
 			})
 
 			it('Q at d3, 20. ... Qxh3 should be successful', function(done) {
 				moveTest('d3', 'h3', true, done, 'white', true)
 			})
+			
 		})
 
 		describe('check bishop rank and file move', function() {

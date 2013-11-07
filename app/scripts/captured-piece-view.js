@@ -3,8 +3,6 @@ CapturedPieceView = Backbone.View.extend({
 	className: 'captured',
 
 	initialize: function() {
-		console.log('yo i be here')
-		console.log(this.model.piece)
 
 		$('.' + this.model.get('player')).append(this.$el);
 
